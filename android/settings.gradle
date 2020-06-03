@@ -1,0 +1,2 @@
+rootProject.name='odb'
+include ':app'
