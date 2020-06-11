@@ -575,9 +575,9 @@ window.PDFBug = (function PDFBugClosure() {
         if (tool.enabled) {
           tool.init(pdfjsLib);
         } else {
-          panel.textContent = tool.name + ' is disabled. To enable add ' +
-                              ' "' + tool.id + '" to the pdfBug parameter ' +
-                              'and refresh (separate multiple by commas).';
+          panel.textContent = tool.name + ' is disabled. To enable add '
++' "' + tool.id + '" to the pdfBug parameter '
++'and refresh (separate multiple by commas).';
         }
         buttons.push(panelButton);
       }

@@ -110,8 +110,8 @@ var document = window.document;
 		if ( node ) {
 			for ( i in preservedScriptAttributes ) {
 
-				// Support: Firefox 64+, Edge 18+
-				// Some browsers don't support the "nonce" property on scripts.
+				// Support: Firefox 64+, Edge 18
++// Some browsers don't support the "nonce" property on scripts.
 				// On the other hand, just using `getAttribute` is not enough as
 				// the `nonce` attribute is reset to an empty string whenever it
 				// becomes browsing-context connected.
@@ -587,8 +587,8 @@ var i,
 		return -1;
 	},
 
-	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|" +
-		"ismap|loop|multiple|open|readonly|required|scoped",
+	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|"
++"ismap|loop|multiple|open|readonly|required|scoped",
 
 	// Regular expressions
 
@@ -596,41 +596,36 @@ var i,
 	whitespace = "[\\x20\\t\\r\\n\\f]",
 
 	// https://www.w3.org/TR/css-syntax-3/#ident-token-diagram
-	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace +
-		"?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
+	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace
++"?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
 
 	// Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
-	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
-
-		// Operator (capture 2)
-		"*([*^$|!~]?=)" + whitespace +
-
-		// "Attribute values must be CSS identifiers [capture 5]
+	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace
++// Operator (capture 2)
+		"*([*^$|!~]?=)" + whitespace
++// "Attribute values must be CSS identifiers [capture 5]
 		// or strings [capture 3 or capture 4]"
-		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" +
-		whitespace + "*\\]",
+		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)"
++whitespace + "*\\]",
 
-	pseudos = ":(" + identifier + ")(?:\\((" +
-
-		// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
+	pseudos = ":(" + identifier + ")(?:\\(("
++// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
 		// 1. quoted (capture 3; capture 4 or capture 5)
-		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
-
-		// 2. simple (capture 6)
-		"((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" +
-
-		// 3. anything else (capture 2)
-		".*" +
-		")\\)|)",
+		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|"
++// 2. simple (capture 6)
+		"((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|"
++// 3. anything else (capture 2)
+		".*"
++")\\)|)",
 
 	// Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
 	rwhitespace = new RegExp( whitespace + "+", "g" ),
-	rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" +
-		whitespace + "+$", "g" ),
+	rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)"
++whitespace + "+$", "g" ),
 
 	rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
-	rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace +
-		"*" ),
+	rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace
++"*" ),
 	rdescend = new RegExp( whitespace + "|>" ),
 
 	rpseudo = new RegExp( pseudos ),
@@ -642,16 +637,16 @@ var i,
 		"TAG": new RegExp( "^(" + identifier + "|[*])" ),
 		"ATTR": new RegExp( "^" + attributes ),
 		"PSEUDO": new RegExp( "^" + pseudos ),
-		"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" +
-			whitespace + "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" +
-			whitespace + "*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
+		"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\("
++whitespace + "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)"
++whitespace + "*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
 		"bool": new RegExp( "^(?:" + booleans + ")$", "i" ),
 
 		// For use in libraries implementing .is()
 		// We use this for POS matching in `select`
-		"needsContext": new RegExp( "^" + whitespace +
-			"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + whitespace +
-			"*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
+		"needsContext": new RegExp( "^" + whitespace
++"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + whitespace
++"*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
 	},
 
 	rhtml = /HTML$/i,
@@ -677,8 +672,8 @@ var i,
 			nonHex :
 
 			// Replace a hexadecimal escape sequence with the encoded Unicode code point
-			// Support: IE <=11+
-			// For values outside the Basic Multilingual Plane (BMP), manually construct a
+			// Support: IE <=11
++// For values outside the Basic Multilingual Plane (BMP), manually construct a
 			// surrogate pair
 			high < 0 ?
 				String.fromCharCode( high + 0x10000 ) :
@@ -697,8 +692,8 @@ var i,
 			}
 
 			// Control characters and (dependent upon position) numbers get escaped as code points
-			return ch.slice( 0, -1 ) + "\\" +
-				ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
+			return ch.slice( 0, -1 ) + "\\"
++ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
 		}
 
 		// Other potentially-special ASCII characters get backslash-escaped
@@ -868,8 +863,8 @@ function Sizzle( selector, context, results, seed ) {
 					groups = tokenize( selector );
 					i = groups.length;
 					while ( i-- ) {
-						groups[ i ] = ( nid ? "#" + nid : ":scope" ) + " " +
-							toSelector( groups[ i ] );
+						groups[ i ] = ( nid ? "#" + nid : ":scope" ) + " "
++toSelector( groups[ i ] );
 					}
 					newSelector = groups.join( "," );
 				}
@@ -1127,8 +1122,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 		doc = node ? node.ownerDocument || node : preferredDoc;
 
 	// Return early if doc is invalid or already selected
-	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( doc == document || doc.nodeType !== 9 || !doc.documentElement ) {
@@ -1140,10 +1135,10 @@ setDocument = Sizzle.setDocument = function( node ) {
 	docElem = document.documentElement;
 	documentIsHTML = !isXML( document );
 
-	// Support: IE 9 - 11+, Edge 12 - 18+
-	// Accessing iframe documents after unload throws "permission denied" errors (jQuery #13936)
-	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// Support: IE 9 - 11+, Edge 12 - 18
++// Accessing iframe documents after unload throws "permission denied" errors (jQuery #13936)
+	// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( preferredDoc != document &&
@@ -1325,9 +1320,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 			// setting a boolean content attribute,
 			// since its presence should be enough
 			// https://bugs.jquery.com/ticket/12359
-			docElem.appendChild( el ).innerHTML = "<a id='" + expando + "'></a>" +
-				"<select id='" + expando + "-\r\\' msallowcapture=''>" +
-				"<option selected=''></option></select>";
+			docElem.appendChild( el ).innerHTML = "<a id='" + expando + "'></a>"
++"<select id='" + expando + "-\r\\' msallowcapture=''>"
++"<option selected=''></option></select>";
 
 			// Support: IE8, Opera 11-12.16
 			// Nothing should be selected when empty strings follow ^= or $= or *=
@@ -1343,13 +1338,13 @@ setDocument = Sizzle.setDocument = function( node ) {
 				rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
 			}
 
-			// Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
-			if ( !el.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
+			// Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8
++if ( !el.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
 				rbuggyQSA.push( "~=" );
 			}
 
-			// Support: IE 11+, Edge 15 - 18+
-			// IE 11/Edge don't find elements on a `[name='']` query in some cases.
+			// Support: IE 11+, Edge 15 - 18
++// IE 11/Edge don't find elements on a `[name='']` query in some cases.
 			// Adding a temporary attribute to the document before the selection works
 			// around the issue.
 			// Interestingly, IE 10 & older don't seem to have the issue.
@@ -1357,8 +1352,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 			input.setAttribute( "name", "" );
 			el.appendChild( input );
 			if ( !el.querySelectorAll( "[name='']" ).length ) {
-				rbuggyQSA.push( "\\[" + whitespace + "*name" + whitespace + "*=" +
-					whitespace + "*(?:''|\"\")" );
+				rbuggyQSA.push( "\\[" + whitespace + "*name" + whitespace + "*="
++whitespace + "*(?:''|\"\")" );
 			}
 
 			// Webkit/Opera - :checked should return selected option elements
@@ -1368,8 +1363,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 				rbuggyQSA.push( ":checked" );
 			}
 
-			// Support: Safari 8+, iOS 8+
-			// https://bugs.webkit.org/show_bug.cgi?id=136851
+			// Support: Safari 8+, iOS 8
++// https://bugs.webkit.org/show_bug.cgi?id=136851
 			// In-page `selector#id sibling-combinator selector` fails
 			if ( !el.querySelectorAll( "a#" + expando + "+*" ).length ) {
 				rbuggyQSA.push( ".#.+[+~]" );
@@ -1382,8 +1377,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 		} );
 
 		assert( function( el ) {
-			el.innerHTML = "<a href='' disabled='disabled'></a>" +
-				"<select disabled='disabled'><option/></select>";
+			el.innerHTML = "<a href='' disabled='disabled'></a>"
++"<select disabled='disabled'><option/></select>";
 
 			// Support: Windows 8 Native Apps
 			// The type and name attributes are restricted during .innerHTML assignment
@@ -1403,8 +1398,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 				rbuggyQSA.push( ":enabled", ":disabled" );
 			}
 
-			// Support: IE9-11+
-			// IE's :disabled selector does not pick up the children of disabled fieldsets
+			// Support: IE9-11
++// IE's :disabled selector does not pick up the children of disabled fieldsets
 			docElem.appendChild( el ).disabled = true;
 			if ( el.querySelectorAll( ":disabled" ).length !== 2 ) {
 				rbuggyQSA.push( ":enabled", ":disabled" );
@@ -1487,8 +1482,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 		}
 
 		// Calculate position if both inputs belong to the same document
-		// Support: IE 11+, Edge 17 - 18+
-		// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+		// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 		// two documents; shallow comparisons work.
 		// eslint-disable-next-line eqeqeq
 		compare = ( a.ownerDocument || a ) == ( b.ownerDocument || b ) ?
@@ -1502,8 +1497,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 			( !support.sortDetached && b.compareDocumentPosition( a ) === compare ) ) {
 
 			// Choose the first element that is related to our preferred document
-			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+			// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
 			if ( a == document || a.ownerDocument == preferredDoc &&
@@ -1511,8 +1506,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 				return -1;
 			}
 
-			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+			// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
 			if ( b == document || b.ownerDocument == preferredDoc &&
@@ -1546,8 +1541,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 		// Parentless nodes are either documents or disconnected
 		if ( !aup || !bup ) {
 
-			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+			// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			/* eslint-disable eqeqeq */
 			return a == document ? -1 :
@@ -1585,8 +1580,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 			siblingCheck( ap[ i ], bp[ i ] ) :
 
 			// Otherwise nodes in our document sort first
-			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+			// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			/* eslint-disable eqeqeq */
 			ap[ i ] == preferredDoc ? -1 :
@@ -1632,8 +1627,8 @@ Sizzle.matchesSelector = function( elem, expr ) {
 Sizzle.contains = function( context, elem ) {
 
 	// Set document vars if needed
-	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( ( context.ownerDocument || context ) != document ) {
@@ -1645,8 +1640,8 @@ Sizzle.contains = function( context, elem ) {
 Sizzle.attr = function( elem, name ) {
 
 	// Set document vars if needed
-	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+	// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( ( elem.ownerDocument || elem ) != document ) {
@@ -1869,8 +1864,8 @@ Expr = Sizzle.selectors = {
 			var pattern = classCache[ className + " " ];
 
 			return pattern ||
-				( pattern = new RegExp( "(^|" + whitespace +
-					")" + className + "(" + whitespace + "|$)" ) ) && classCache(
+				( pattern = new RegExp( "(^|" + whitespace
++")" + className + "(" + whitespace + "|$)" ) ) && classCache(
 						className, function( elem ) {
 							return pattern.test(
 								typeof elem.className === "string" && elem.className ||
@@ -2684,8 +2679,8 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 
 			if ( outermost ) {
 
-				// Support: IE 11+, Edge 17 - 18+
-				// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+				// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 				// two documents; shallow comparisons work.
 				// eslint-disable-next-line eqeqeq
 				outermostContext = context == document || context || outermost;
@@ -2698,8 +2693,8 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				if ( byElement && elem ) {
 					j = 0;
 
-					// Support: IE 11+, Edge 17 - 18+
-					// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+					// Support: IE 11+, Edge 17 - 18
++// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 					// two documents; shallow comparisons work.
 					// eslint-disable-next-line eqeqeq
 					if ( !context && elem.ownerDocument != document ) {
@@ -2910,8 +2905,8 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 // Sort stability
 support.sortStable = expando.split( "" ).sort( sortOrder ).join( "" ) === expando;
 
-// Support: Chrome 14-35+
-// Always assume duplicates if they aren't passed to the comparison function
+// Support: Chrome 14-35
++// Always assume duplicates if they aren't passed to the comparison function
 support.detectDuplicates = !!hasDuplicate;
 
 // Initialize against the default document
@@ -3370,8 +3365,8 @@ jQuery.each( {
 	contents: function( elem ) {
 		if ( elem.contentDocument != null &&
 
-			// Support: IE 11+
-			// <object> elements with no `data` attribute has an object
+			// Support: IE 11
++// <object> elements with no `data` attribute has an object
 			// `contentDocument` with a `null` prototype.
 			getProto( elem.contentDocument ) ) {
 
@@ -5102,8 +5097,8 @@ function returnFalse() {
 	return false;
 }
 
-// Support: IE <=9 - 11+
-// focus() and blur() are asynchronous, except when they are no-op.
+// Support: IE <=9 - 11
++// focus() and blur() are asynchronous, except when they are no-op.
 // So expect focus to be synchronous when the element is already active,
 // and blur to be synchronous when the element is not already active.
 // (focus and blur are always synchronous in other supported browsers,
@@ -5595,8 +5590,8 @@ jQuery.event = {
 		beforeunload: {
 			postDispatch: function( event ) {
 
-				// Support: Firefox 20+
-				// Firefox doesn't alert if the returnValue field is not set.
+				// Support: Firefox 20
++// Firefox doesn't alert if the returnValue field is not set.
 				if ( event.result !== undefined && event.originalEvent ) {
 					event.originalEvent.returnValue = event.result;
 				}
@@ -5641,8 +5636,8 @@ function leverageNative( el, type, expectSync ) {
 					dataPriv.set( this, type, saved );
 
 					// Trigger the native event and capture its result
-					// Support: IE <=9 - 11+
-					// focus() and blur() are asynchronous
+					// Support: IE <=9 - 11
++// focus() and blur() are asynchronous
 					notAsync = expectSync( this, type );
 					this[ type ]();
 					result = dataPriv.get( this, type );
@@ -5677,8 +5672,8 @@ function leverageNative( el, type, expectSync ) {
 				dataPriv.set( this, type, {
 					value: jQuery.event.trigger(
 
-						// Support: IE <=9 - 11+
-						// Extend with the prototype to reset the above stopImmediatePropagation()
+						// Support: IE <=9 - 11
++// Extend with the prototype to reset the above stopImmediatePropagation()
 						jQuery.extend( saved[ 0 ], jQuery.Event.prototype ),
 						saved.slice( 1 ),
 						this
@@ -6224,14 +6219,14 @@ jQuery.extend( {
 						}
 					}
 
-					// Support: Chrome <=35 - 45+
-					// Assign undefined instead of using delete, see Data#remove
+					// Support: Chrome <=35 - 45
++// Assign undefined instead of using delete, see Data#remove
 					elem[ dataPriv.expando ] = undefined;
 				}
 				if ( elem[ dataUser.expando ] ) {
 
-					// Support: Chrome <=35 - 45+
-					// Assign undefined instead of using delete, see Data#remove
+					// Support: Chrome <=35 - 45
++// Assign undefined instead of using delete, see Data#remove
 					elem[ dataUser.expando ] = undefined;
 				}
 			}
@@ -6457,12 +6452,12 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 			return;
 		}
 
-		container.style.cssText = "position:absolute;left:-11111px;width:60px;" +
-			"margin-top:1px;padding:0;border:0";
+		container.style.cssText = "position:absolute;left:-11111px;width:60px;"
++"margin-top:1px;padding:0;border:0";
 		div.style.cssText =
-			"position:relative;display:block;box-sizing:border-box;overflow:scroll;" +
-			"margin:auto;border:1px;padding:1px;" +
-			"width:60%;top:1%";
+			"position:relative;display:block;box-sizing:border-box;overflow:scroll;"
++"margin:auto;border:1px;padding:1px;"
++"width:60%;top:1%";
 		documentElement.appendChild( container ).appendChild( div );
 
 		var divStyle = window.getComputedStyle( div );
@@ -6536,8 +6531,8 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 			return scrollboxSizeVal;
 		},
 
-		// Support: IE 9 - 11+, Edge 15 - 18+
-		// IE/Edge misreport `getComputedStyle` of table rows with width/height
+		// Support: IE 9 - 11+, Edge 15 - 18
++// IE/Edge misreport `getComputedStyle` of table rows with width/height
 		// set in CSS while `offset*` properties report correct values.
 		// Behavior in IE 9 is more subtle than in newer versions & it passes
 		// some versions of this test; make sure not to make it pass there!
@@ -6571,8 +6566,8 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 function curCSS( elem, name, computed ) {
 	var width, minWidth, maxWidth, ret,
 
-		// Support: Firefox 51+
-		// Retrieving style before computed somehow
+		// Support: Firefox 51
++// Retrieving style before computed somehow
 		// fixes an issue with getting wrong values
 		// on detached elements
 		style = elem.style;
@@ -6797,8 +6792,8 @@ function getWidthOrHeight( elem, dimension, extra ) {
 	// In those cases, the computed value can be trusted to be border-box.
 	if ( ( !support.boxSizingReliable() && isBorderBox ||
 
-		// Support: IE 10 - 11+, Edge 15 - 18+
-		// IE/Edge misreport `getComputedStyle` of table rows with width/height
+		// Support: IE 10 - 11+, Edge 15 - 18
++// IE/Edge misreport `getComputedStyle` of table rows with width/height
 		// set in CSS while `offset*` properties report correct values.
 		// Interestingly, in some cases IE 9 doesn't suffer from this issue.
 		!support.reliableTrDimensions() && nodeName( elem, "tr" ) ||
@@ -6829,8 +6824,8 @@ function getWidthOrHeight( elem, dimension, extra ) {
 	val = parseFloat( val ) || 0;
 
 	// Adjust for the element's box model
-	return ( val +
-		boxModelAdjustment(
+	return ( val
++boxModelAdjustment(
 			elem,
 			dimension,
 			extra || ( isBorderBox ? "border" : "content" ),
@@ -7015,8 +7010,8 @@ jQuery.each( [ "height", "width" ], function( _i, dimension ) {
 				// but it must have a current display style that would benefit
 				return rdisplayswap.test( jQuery.css( elem, "display" ) ) &&
 
-					// Support: Safari 8+
-					// Table columns in Safari have non-zero offsetWidth & zero
+					// Support: Safari 8
++// Table columns in Safari have non-zero offsetWidth & zero
 					// getBoundingClientRect().width unless display is changed.
 					// Support: IE <=11 only
 					// Running getBoundingClientRect on a disconnected node
@@ -8932,8 +8927,8 @@ jQuery.param = function( a, traditional ) {
 				valueOrFunction() :
 				valueOrFunction;
 
-			s[ s.length ] = encodeURIComponent( key ) + "=" +
-				encodeURIComponent( value == null ? "" : value );
+			s[ s.length ] = encodeURIComponent( key ) + "="
++encodeURIComponent( value == null ? "" : value );
 		};
 
 	if ( a == null ) {
@@ -9593,8 +9588,8 @@ jQuery.extend( {
 			// Add or update anti-cache param if needed
 			if ( s.cache === false ) {
 				cacheURL = cacheURL.replace( rantiCache, "$1" );
-				uncached = ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ( nonce.guid++ ) +
-					uncached;
+				uncached = ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ( nonce.guid++ )
++uncached;
 			}
 
 			// Put hash and anti-cache on the URL that will be requested (gh-1732)
@@ -9625,8 +9620,8 @@ jQuery.extend( {
 		jqXHR.setRequestHeader(
 			"Accept",
 			s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[ 0 ] ] ?
-				s.accepts[ s.dataTypes[ 0 ] ] +
-					( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
+				s.accepts[ s.dataTypes[ 0 ] ]
++( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
 				s.accepts[ "*" ]
 		);
 
@@ -10128,8 +10123,8 @@ jQuery.ajaxPrefilter( function( s ) {
 // Install script dataType
 jQuery.ajaxSetup( {
 	accepts: {
-		script: "text/javascript, application/javascript, " +
-			"application/ecmascript, application/x-ecmascript"
+		script: "text/javascript, application/javascript, "
++"application/ecmascript, application/x-ecmascript"
 	},
 	contents: {
 		script: /\b(?:java|ecma)script\b/
@@ -10726,9 +10721,9 @@ jQuery.fn.extend( {
 	}
 } );
 
-jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
-	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
-	"change select submit keydown keypress keyup contextmenu" ).split( " " ),
+jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick "
++"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave "
++"change select submit keydown keypress keyup contextmenu" ).split( " " ),
 	function( _i, name ) {
 
 		// Handle event binding
