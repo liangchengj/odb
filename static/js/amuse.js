@@ -205,3 +205,9 @@ function firstOfHead(text) {
     let head = elesByTagName('head')[0];
     head.innerHTML = text + head.innerHTML;
 }
+
+
+
+function firstOfToHead() {
+
+}
