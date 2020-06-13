@@ -7,18 +7,30 @@
   $(function () {
     let baseUrl = "https://cn.bing.com";
     let url = baseUrl + "/HPImageArchive.aspx";
-    $.ajax({
-      url: url,
-      type: "GET",
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader("", "");
-      },
-      success: function (data) {
+    $.get(function (data, status) {
+      if (status == "success") {
         window.location.href = baseUrl + data.images[0].url;
-      },
-      error: function (xhr, textStatus) {
-        alert(xhr.readyState);
-      },
+      } else {
+        alert(status);
+      }
     });
   });
+
+  //   $(function () {
+  //     let baseUrl = "https://cn.bing.com";
+  //     let url = baseUrl + "/HPImageArchive.aspx";
+  //     $.ajax({
+  //       url: url,
+  //       type: "GET",
+  //       beforeSend: function (xhr) {
+  //         xhr.setRequestHeader("", "");
+  //       },
+  //       success: function (data) {
+  //         window.location.href = baseUrl + data.images[0].url;
+  //       },
+  //       error: function (xhr, textStatus) {
+  //         alert(xhr.readyState);
+  //       },
+  //     });
+  //   });
 </script>
