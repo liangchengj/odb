@@ -30,11 +30,21 @@
         Origin: "https://odb.liangchengj.com",
         Accept: "application/json",
       },
+      data: {
+        format: js,
+        idx: 0,
+        n: 1,
+      },
+      dataType: "json",
       success: function (data, textStatus, jqXHR) {
         console.log(data);
       },
-      error: function (jqXHR, textStatus, errorThrown) {},
-      complete: function (jqXHR, textStatus) {},
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+      },
+      complete: function (jqXHR, textStatus) {
+        console.log("It's OK");
+      },
     });
   });
 
