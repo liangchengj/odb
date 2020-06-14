@@ -4,22 +4,38 @@
   crossorigin="anonymous"
 ></script>
 <script type="application/javascript">
+  // $(function () {
+  //   let xhr;
+  //   if (window.XMLHttpRequest) {
+  //     xhr = new XMLHttpRequest();
+  //   } else {
+  //     xhr = new ActiveXObject("Microsoft.XMLHTTP");
+  //   }
+  //   xhr.open("GET", "https://cn.bing.com/HPImageArchive.aspx", true);
+  //   xhr.setRequestHeader("Origin", "https://odb.liangchengj.com");
+  //   xhr.setRequestHeader("Accept", "application/json");
+  //   xhr.onreadystatechange = function () {
+  //     if (xhr.readyState == 4 && xhr.status == 200) {
+  //       console.log(xhr.responseText);
+  //     }
+  //   };
+  //   xhr.send("format=js&idx=0&n=1");
+  // });
+
   $(function () {
-    let xhr;
-    if (window.XMLHttpRequest) {
-      xhr = new XMLHttpRequest();
-    } else {
-      xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xhr.open("GET", "https://cn.bing.com/HPImageArchive.aspx", true);
-    xhr.setRequestHeader("Origin", "https://odb.liangchengj.com");
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        console.log(xhr.responseText);
-      }
-    };
-    xhr.send("format=js&idx=0&n=1");
+    $.ajax({
+      url: "https://cn.bing.com/HPImageArchive.aspx",
+      type: "GET",
+      headers: {
+        Origin: "https://odb.liangchengj.com",
+        Accept: "application/json",
+      },
+      success: function (data, textStatus, jqXHR) {
+        console.log(data);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {},
+      complete: function (jqXHR, textStatus) {},
+    });
   });
 
   // window.location.href =
