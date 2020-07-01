@@ -1,5 +1,5 @@
-// var http = require("http");
-// var server = http.createServer();
+// let http = require("http");
+// let server = http.createServer();
 // server.on("request", (req, resp) => {
 //   resp.setHeader("Content-Type", "text/html;charset=utf-8");
 //   const ip = resp.socket.remoteAddress;
@@ -21,7 +21,7 @@
  * @author Liangcheng Juves
  * @author Noah
  */
-var mimeMapping = [
+let mimeMapping = [
   {
     extension: "123",
     "mime-type": "application/vnd.lotus-1-2-3",
@@ -2605,7 +2605,7 @@ var mimeMapping = [
   },
   {
     extension: "pvb",
-    "mime-type": "application/vnd.3gpp.pic-bw-var",
+    "mime-type": "application/vnd.3gpp.pic-bw-let",
   },
   {
     extension: "pwn",
@@ -4073,11 +4073,11 @@ var mimeMapping = [
 ];
 
 function getMediaTypeFromFileName(filename) {
-  var mimeType;
-  var fileExt = filename.substr(filename.lastIndexOf(".") + 1);
-  for (let i in mimeMapping) {
-    if (mimeMapping[i].extension == fileExt) {
-      mimeType = mimeMapping[i]["mime-type"];
+  let mimeType;
+  let fileExt = filename.substr(filename.lastIndexOf(".") + 1);
+  for (let ele of mimeMapping) {
+    if (ele.extension == fileExt) {
+      mimeType = ele["mime-type"];
       break;
     }
   }
@@ -4095,47 +4095,52 @@ function getMediaTypeFromFileName(filename) {
   }
 }
 
-var http = require("http");
-var fs = require("fs");
-var url = require("url");
+let http = require("http");
+let fs = require("fs");
+let url = require("url");
 
-var port = 8080;
-var indexPage = "index.html";
+let port = 8080;
+let indexPage = "index.html";
 
 http
-  .createServer(function (req, resp) {
-    var pathname = url.parse(req.url).pathname;
+  .createServer((req, resp) => {
+    let pathname = url.parse(req.url).pathname;
     console.log(
-      "[ " +
+      "   [ " +
         new Date().toString() +
-        " ]\t\t" +
+        " ]   " +
         `Request for ${pathname} received.`
     );
-    var gotoPathName = pathname.startsWith("/") ? pathname.substr(1) : pathname;
+    let gotoPathName = pathname.substr(1);
     gotoPathName = "" == gotoPathName ? indexPage : gotoPathName;
+
+    if (gotoPathName == indexPage) {
+      console.log("\n >>> A request started.");
+    }
 
     // console.log(gotoPathName);
 
-    fs.readFile(gotoPathName, function (err, data) {
+    fs.readFile(gotoPathName, (err, data) => {
+      let contentType = "Content-Type";
       if (err) {
-        console.log(err);
+        // console.log(err);
         resp.writeHead(404, {
-          "Content-Type": getMediaTypeFromFileName(".html"),
+          [contentType]: getMediaTypeFromFileName(".html"),
         });
-        resp.write("Not found -> " + pathname);
+        resp.write(`Not Found < ${pathname} > .`);
       } else {
-        var mimeType = getMediaTypeFromFileName(gotoPathName);
+        let mimeType = getMediaTypeFromFileName(gotoPathName);
         // console.log(mimeType);
         resp.writeHead(200, {
-          "Content-Type": mimeType,
+          [contentType]: mimeType,
         });
-        resp.write(data.toString());
+        resp.write(data);
       }
       resp.end();
     });
   })
   .listen(port);
 
-console.log(`Server running at http://127.0.0.1:${port}/ .\n`);
+console.log(`Server running at http://127.0.0.1:${port}/ .`);
 
 // console.error(JSON.stringify(mimeMapping));
