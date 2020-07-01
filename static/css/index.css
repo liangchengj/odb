@@ -4,11 +4,12 @@
  */
 
 @charset "utf-8";
+
 * {
     margin: 0;
     padding: 0;
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC",
-    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+        "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     color: white;
 }
 
@@ -52,9 +53,7 @@ main {
 main div {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     padding: 0 2rem;
-    align-content: flex-start;
 }
 
 main ul {
@@ -82,11 +81,24 @@ footer div {
     text-align: center;
     color: rgba(255, 255, 255, 0.4);
     font-size: 0.65rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
 }
 
 .book_content {
-    font-size: 0.9rem;
+    width: 24rem;
+    font-size: 1rem;
     padding: 0.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0.8rem 2rem;
+}
+
+.book_content:hover {
+    font-size: 0.8rem;
+    transform: scale(1.5);
 }
 
 .book_content img {
@@ -115,7 +127,3 @@ footer div {
 .book_content a:visited {
     color: rgb(106, 153, 85);
 }
-
-
-
-
