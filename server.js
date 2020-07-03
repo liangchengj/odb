@@ -1,20 +1,3 @@
-// let http = require("http");
-// let server = http.createServer();
-// server.on("request", (req, resp) => {
-//   resp.setHeader("Content-Type", "text/html;charset=utf-8");
-//   const ip = resp.socket.remoteAddress;
-//   const port = resp.socket.remotePort;
-//   console.log(`Your IP Address -> ${ip}:${port}`);
-//   resp.write(
-//     "<script type=\"application/javascript\">window.location.href='index.html';</script>"
-//   );
-//   console.log("Responsed OK!");
-//   resp.end();
-// });
-// server.listen(8080, () => {
-//   console.log("//////");
-// });
-
 /**
  * Created at 2020/7/2 5:11.
  *
@@ -4099,12 +4082,15 @@ let http = require("http");
 let fs = require("fs");
 let url = require("url");
 
+let compressHtml = true;
 let port = 80;
 let indexPage = "index.html";
+let pdfLocated;
 
 http
   .createServer((req, resp) => {
     let pathname = url.parse(req.url).pathname;
+    pathname = decodeURI(pathname);
     console.log(
       "   [ " +
         new Date().toString() +
@@ -4118,29 +4104,64 @@ http
       console.log("\n >>> A request started.");
     }
 
-    // console.log(gotoPathName);
-
     fs.readFile(gotoPathName, (err, data) => {
       let contentType = "Content-Type";
+      let ctOfHtml = getMediaTypeFromFileName(".html");
       if (err) {
-        // console.log(err);
-        resp.writeHead(404, {
-          [contentType]: getMediaTypeFromFileName(".html"),
-        });
-        resp.write(`Not Found < ${pathname} > .`);
+        respCustomHtml(
+          resp,
+          404,
+          { [contentType]: ctOfHtml },
+          `<!-- ${new Date().toString()} --><h2><br/>&nbsp;&nbsp;Not Found => "${pathname}"</h2>`
+        );
       } else {
         let mimeType = getMediaTypeFromFileName(gotoPathName);
-        // console.log(mimeType);
+
         resp.writeHead(200, {
           [contentType]: mimeType,
         });
-        resp.write(data);
+
+        if (gotoPathName.trim().endsWith(".html") && compressHtml) {
+          resp.write(compressData(data.toString()));
+        } else {
+          resp.write(data);
+        }
       }
       resp.end();
     });
   })
   .listen(port);
 
-console.log(`Server running at http://127.0.0.1:${port}/ .`);
+function respCustomHtml(resp, status, respHeader, data) {
+  resp.writeHead(status, respHeader);
+  resp.write(data);
+}
 
-// console.error(JSON.stringify(mimeMapping));
+function compressData(html) {
+  html = html.replace(/\r+|\n/gi, "");
+  html = html.replace(/[ ]+</gi, "<");
+  html = html.replace(/>[ ]+/gi, ">");
+  html = html.replace(/(?<=")[ ]+(?=\/>)/gi, "");
+  return html;
+}
+
+function getIPAddress() {
+  let interfaces = require("os").networkInterfaces();
+  for (let devName in interfaces) {
+    let iface = interfaces[devName];
+    for (let i = 0; i < iface.length; i++) {
+      let alias = iface[i];
+      if (
+        alias.family === "IPv4" &&
+        alias.address !== "127.0.0.1" &&
+        !alias.internal
+      ) {
+        return alias.address;
+      }
+    }
+  }
+}
+
+const LOCAL_IP = getIPAddress();
+
+console.log(`Server running at http://${LOCAL_IP}:${port}/ .`);
