@@ -25,8 +25,7 @@ $(function () {
       let html = "";
       for (let i in data) {
         let bookName = data[i];
-        let url = "/static/pdf/" + bookName;
-        url = url.replace("#", "%23");
+        let url = "/static/pdf/" + encodeURIComponent(bookName);
         html +=
           '<span class="book_content">' +
           '<img src="/static/img/book_icon.svg"/>' +

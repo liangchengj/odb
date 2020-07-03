@@ -4090,7 +4090,7 @@ let pdfLocated;
 http
   .createServer((req, resp) => {
     let pathname = url.parse(req.url).pathname;
-    pathname = decodeURI(pathname);
+    pathname = decodeURIComponent(pathname);
     console.log(
       "   [ " +
         new Date().toString() +
@@ -4099,10 +4099,6 @@ http
     );
     let gotoPathName = pathname.substr(1);
     gotoPathName = "" == gotoPathName ? indexPage : gotoPathName;
-
-    if (gotoPathName == indexPage) {
-      console.log("\n >>> A request started.");
-    }
 
     fs.readFile(gotoPathName, (err, data) => {
       let contentType = "Content-Type";
