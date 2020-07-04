@@ -4164,12 +4164,12 @@ http
         let compressedData = "";
         compressedData =
           gotoPathName.trim().endsWith(".html") && DO_COMPRESS_HTML
-            ? compressHtml(data.toString("utf-8"))
+            ? compressHtml(data.toString())
             : compressedData;
 
         // compressedData =
         //   gotoPathName.trim().endsWith(".js") && DO_COMPRESS_HTML
-        //     ? compressJs(data.toString("utf-8"))
+        //     ? compressJs(data.toString())
         //     : compressedData;
 
         callBack(
@@ -4208,37 +4208,37 @@ let compressHtml = (html) =>
     .replace(/>[ ]+/gi, ">")
     .replace(/(?<=")[ ]+(?=\/>)/gi, "");
 
-let compressJs = (js) =>js;
-  // js
-  //   .replace(/\blet\b/gi, "var")
-    // (data, status) => {}  -> function (data, status) {}
-    // /* .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1") */;
+let compressJs = (js) => js;
+// js
+//   .replace(/\blet\b/gi, "var")
+// (data, status) => {}  -> function (data, status) {}
+// /* .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1") */;
 
-    // .replace(/`([^`]*)`/gi /* *`*`* */, (...args) => {
-    //   let tmp = args[1];
-    //   console.log(tmp);
-    //   tmp = tmp.replace(/"/g, '\\"');
-    //   if (tmp.startsWith("\n")) {
-    //     tmp = '"\\n"' + tmp.substr(1);
-    //   }
-    //   if (tmp.endsWith("\n")) {
-    //     tmp = tmp.substr(0, tmp.length - 1) + '"\\n"';
-    //   }
-    //   tmp = tmp.replace(/ *([\r\n])+ */g, '"\n\t+ "');
-    //   let endsWithModel = tmp.endsWith("}");
-    //   if (endsWithModel) {
-    //     tmp = tmp.replace(/\}/g, "");
-    //   } else {
-    //     tmp = tmp.replace(/\}/g, '+"');
-    //   }
+// .replace(/`([^`]*)`/gi /* *`*`* */, (...args) => {
+//   let tmp = args[1];
+//   console.log(tmp);
+//   tmp = tmp.replace(/"/g, '\\"');
+//   if (tmp.startsWith("\n")) {
+//     tmp = '"\\n"' + tmp.substr(1);
+//   }
+//   if (tmp.endsWith("\n")) {
+//     tmp = tmp.substr(0, tmp.length - 1) + '"\\n"';
+//   }
+//   tmp = tmp.replace(/ *([\r\n])+ */g, '"\n\t+ "');
+//   let endsWithModel = tmp.endsWith("}");
+//   if (endsWithModel) {
+//     tmp = tmp.replace(/\}/g, "");
+//   } else {
+//     tmp = tmp.replace(/\}/g, '+"');
+//   }
 
-    //   tmp = tmp.replace(/\$\{/g, '" + ');
-    //   if (tmp.startsWith("${")) {
-    //     tmp = tmp.substr(2);
-    //   }
+//   tmp = tmp.replace(/\$\{/g, '" + ');
+//   if (tmp.startsWith("${")) {
+//     tmp = tmp.substr(2);
+//   }
 
-    //   return endsWithModel ? `"${tmp}` : `"${tmp}"`;
-    // });
+//   return endsWithModel ? `"${tmp}` : `"${tmp}"`;
+// });
 
 console.log(
   `Server running at ${LIGHT_GREEN}${UNDER_LINE}http://${LOCAL_IP}:${PORT}/${NONE} ${LIGHT_GREEN}.${NONE}`
