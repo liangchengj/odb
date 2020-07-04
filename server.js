@@ -4,7 +4,7 @@
  * @author Liangcheng Juves
  * @author Noah
  */
-let mimeMapping = [
+const MIME_MAPPING = [
   {
     extension: "123",
     "mime-type": "application/vnd.lotus-1-2-3",
@@ -4055,12 +4055,70 @@ let mimeMapping = [
   },
 ];
 
-function getMediaTypeFromFileName(filename) {
+const NONE = "\033[0m";
+const HIGH_LIGHT = "\033[1m";
+const UNDER_LINE = "\033[4m";
+const FLASHING = "\033[5m";
+const REVERSE = "\033[7m";
+const BLANKING = "\033[8m";
+const CLEAR_SCREEN = "\033[2J";
+const CLEAR_CONTENT_FROM_CURSOR_OF_EOL = "\033[K";
+
+const RED = "\033[0;32;31m";
+const GREEN = "\033[0;32;32m";
+const BLUE = "\033[0;32;34m";
+
+const WHITE = "\033[1;37m";
+const CYAN = "\033[0;36m";
+const PURPLE = "\033[0;35m";
+const YELLOW = "\033[1;33m";
+const BROWN = "\033[0;33m";
+
+const LIGHT_RED = "\033[1;31m";
+const LIGHT_GREEN = "\033[1;32m";
+const LIGHT_BLUE = "\033[1;34m";
+const LIGHT_CYAN = "\033[1;36m";
+const LIGHT_PURPLE = "\033[1;35m";
+const LIGHT_GRAY = "\033[0;37m";
+
+const DARK_GRAY = "\033[1;30m";
+
+let MOVE_CURSOR_UP = (n) => `\0o033[${n}A`;
+let MOVE_CURSOR_DOWN = (n) => `\0o033[${n}B`;
+let MOVE_CURSOR_RIGHT = (n) => `\0o033[${n}C`;
+let MOVE_CURSOR_LEFT = (n) => `\0o033[${n}D`;
+
+/**
+ * Set cursor position (y column x row).
+ * @param {column} y
+ * @param {row} x
+ */
+let MOVE_CURSOR_POSTION = (y, x) => `\0o033[${y};${x}H`;
+
+const LOCAL_IP = (() => {
+  let nifaces = require("os").networkInterfaces();
+  for (let devName in nifaces) {
+    for (let alias of nifaces[devName]) {
+      if (
+        alias.family === "IPv4" &&
+        alias.address !== "127.0.0.1" &&
+        !alias.internal
+      ) {
+        return alias.address;
+      }
+    }
+  }
+})();
+const PORT = 80;
+const INDEX_PAGE = "index.html";
+const DO_COMPRESS_HTML = true;
+
+function mediaTypeOf(filename) {
   let mimeType;
   let fileExt = filename.substr(filename.lastIndexOf(".") + 1);
-  for (let ele of mimeMapping) {
-    if (ele.extension == fileExt) {
-      mimeType = ele["mime-type"];
+  for (let item of MIME_MAPPING) {
+    if (item.extension == fileExt) {
+      mimeType = item["mime-type"];
       break;
     }
   }
@@ -4071,7 +4129,7 @@ function getMediaTypeFromFileName(filename) {
       "html" == fileExt ||
       "json" == fileExt
     ) {
-      return mimeType + ";charset=utf-8";
+      return `${mimeType};charset=utf-8`;
     } else {
       return mimeType;
     }
@@ -4082,82 +4140,113 @@ let http = require("http");
 let fs = require("fs");
 let url = require("url");
 
-let compressHtml = true;
-let port = 80;
-let indexPage = "index.html";
-let pdfLocated;
-
 http
   .createServer((req, resp) => {
-    let pathname = url.parse(req.url).pathname;
-    pathname = decodeURIComponent(pathname);
+    let pathname = decodeURIComponent(url.parse(req.url).pathname);
+    let strOfDate = new Date().toString();
     console.log(
-      "   [ " +
-        new Date().toString() +
-        " ]   " +
-        `Request for ${pathname} received.`
+      `   ${LIGHT_BLUE}[ ${strOfDate} ]${NONE}   Request for ${UNDER_LINE}${LIGHT_CYAN}${pathname}${NONE} received.`
     );
     let gotoPathName = pathname.substr(1);
-    gotoPathName = "" == gotoPathName ? indexPage : gotoPathName;
+
+    gotoPathName = "" == gotoPathName ? INDEX_PAGE : gotoPathName;
 
     fs.readFile(gotoPathName, (err, data) => {
-      let contentType = "Content-Type";
-      let ctOfHtml = getMediaTypeFromFileName(".html");
       if (err) {
-        respCustomHtml(
+        let errHtml = `<!-- ${strOfDate} --><h2><br/>&nbsp;&nbsp;Not Found => "${pathname}"</h2>`;
+        callBack(
           resp,
           404,
-          { [contentType]: ctOfHtml },
-          `<!-- ${new Date().toString()} --><h2><br/>&nbsp;&nbsp;Not Found => "${pathname}"</h2>`
+          commonRespHeaderOf(mediaTypeOf(".html"), errHtml.length, strOfDate),
+          errHtml
         );
       } else {
-        let mimeType = getMediaTypeFromFileName(gotoPathName);
+        let compressedData = "";
+        compressedData =
+          gotoPathName.trim().endsWith(".html") && DO_COMPRESS_HTML
+            ? compressHtml(data.toString("utf-8"))
+            : compressedData;
 
-        resp.writeHead(200, {
-          [contentType]: mimeType,
-        });
+        // compressedData =
+        //   gotoPathName.trim().endsWith(".js") && DO_COMPRESS_HTML
+        //     ? compressJs(data.toString("utf-8"))
+        //     : compressedData;
 
-        if (gotoPathName.trim().endsWith(".html") && compressHtml) {
-          resp.write(compressData(data.toString()));
-        } else {
-          resp.write(data);
-        }
+        callBack(
+          resp,
+          200,
+          commonRespHeaderOf(
+            mediaTypeOf(gotoPathName),
+            "" == compressedData ? data.length : compressedData.length,
+            strOfDate
+          ),
+          "" == compressedData ? data : compressedData
+        );
       }
       resp.end();
     });
   })
-  .listen(port);
+  .listen(PORT);
 
-function respCustomHtml(resp, status, respHeader, data) {
+let commonRespHeaderOf = (contentType, contentLength, strOfDate) => ({
+  Connection: "Keep-Alive",
+  "Content-Type": contentType,
+  "Content-Length": contentLength,
+  Date: strOfDate,
+  Host: LOCAL_IP,
+});
+
+function callBack(resp, status, respHeader, data) {
   resp.writeHead(status, respHeader);
   resp.write(data);
 }
 
-function compressData(html) {
-  html = html.replace(/\r+|\n/gi, "");
-  html = html.replace(/[ ]+</gi, "<");
-  html = html.replace(/>[ ]+/gi, ">");
-  html = html.replace(/(?<=")[ ]+(?=\/>)/gi, "");
-  return html;
-}
+let compressHtml = (html) =>
+  html
+    .replace(/\r+|\n/gi, "")
+    .replace(/[ ]+</gi, "<")
+    .replace(/>[ ]+/gi, ">")
+    .replace(/(?<=")[ ]+(?=\/>)/gi, "");
 
-function getIPAddress() {
-  let interfaces = require("os").networkInterfaces();
-  for (let devName in interfaces) {
-    let iface = interfaces[devName];
-    for (let i = 0; i < iface.length; i++) {
-      let alias = iface[i];
-      if (
-        alias.family === "IPv4" &&
-        alias.address !== "127.0.0.1" &&
-        !alias.internal
-      ) {
-        return alias.address;
-      }
-    }
-  }
-}
+let compressJs = (js) =>js;
+  // js
+  //   .replace(/\blet\b/gi, "var")
+    // (data, status) => {}  -> function (data, status) {}
+    // /* .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1") */;
 
-const LOCAL_IP = getIPAddress();
+    // .replace(/`([^`]*)`/gi /* *`*`* */, (...args) => {
+    //   let tmp = args[1];
+    //   console.log(tmp);
+    //   tmp = tmp.replace(/"/g, '\\"');
+    //   if (tmp.startsWith("\n")) {
+    //     tmp = '"\\n"' + tmp.substr(1);
+    //   }
+    //   if (tmp.endsWith("\n")) {
+    //     tmp = tmp.substr(0, tmp.length - 1) + '"\\n"';
+    //   }
+    //   tmp = tmp.replace(/ *([\r\n])+ */g, '"\n\t+ "');
+    //   let endsWithModel = tmp.endsWith("}");
+    //   if (endsWithModel) {
+    //     tmp = tmp.replace(/\}/g, "");
+    //   } else {
+    //     tmp = tmp.replace(/\}/g, '+"');
+    //   }
 
-console.log(`Server running at http://${LOCAL_IP}:${port}/ .`);
+    //   tmp = tmp.replace(/\$\{/g, '" + ');
+    //   if (tmp.startsWith("${")) {
+    //     tmp = tmp.substr(2);
+    //   }
+
+    //   return endsWithModel ? `"${tmp}` : `"${tmp}"`;
+    // });
+
+console.log(
+  `Server running at ${LIGHT_GREEN}${UNDER_LINE}http://${LOCAL_IP}:${PORT}/${NONE} ${LIGHT_GREEN}.${NONE}`
+);
+
+// let a="<span class=\"book_content\"><img src=\"/static/img/book_icon.svg\"/>
+// " + "        <a href=\"javascript:void(0);\" onclick=\"loadPdf('" + url+"');\">《 " + bookName.substring(
+// " + "          0,
+// " + "          bookName.lastIndexOf(\".\")
+// " + "        )+" 》</a>
+// " + "        </span>";

@@ -1,7 +1,9 @@
 /**
+ * Created at 2020/05/27 23:28.
+ *
  * @author Liangcheng Juves
- * Created at 2020/05/27 23:28
  */
+
 function loadPdf(url) {
   $(".content").css({
     display: "flex",
@@ -16,31 +18,22 @@ function loadPdf(url) {
   }, 3000);
 }
 
-$(function () {
-  //   $.get("/static/pdf", function (data, status) {
-  //       console.log(data);
-  //   });
-  $.get("/static/json/books.json", function (data, status) {
+$(() => {
+  $.get("/static/json/books.json", (data, status) => {
     if ("success" == status) {
-      let html = "";
-      for (let i in data) {
-        let bookName = data[i];
-        let url = "/static/pdf/" + encodeURIComponent(bookName);
-        html +=
-          '<span class="book_content">' +
-          '<img src="/static/img/book_icon.svg"/>' +
-          '<a href="javascript:void(0);" ' +
-          "onclick=\"loadPdf('" +
-          url +
-          "');\">《 " +
-          bookName.substring(0, bookName.lastIndexOf(".")) +
-          " 》</a></span>";
-
-        $("body main div").append(html);
-        html = "";
+      for (let bookName of data) {
+        let url = `/static/pdf/${encodeURIComponent(bookName)}`;
+        $("body main div")
+          .append(`<span class="book_content"><img src="/static/img/book_icon.svg"/>
+          <a href="javascript:void(0);" onclick="loadPdf('${url}');">《 ${bookName.substring(
+          0,
+          bookName.lastIndexOf(".")
+        )} 》</a>
+        </span>`);
       }
     }
   });
+  $("body header img").attr({ src: "/static/img/book.svg" });
   $("body header span").text("Open Developer Books");
   $("body footer div").text(
     "访问者可将本网站提供的内容或服务用于个人学习、研究或欣赏，以及其他非商业性或非盈利性用途，" +
