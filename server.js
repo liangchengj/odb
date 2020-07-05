@@ -4083,17 +4083,19 @@ const LIGHT_GRAY = "\033[0;37m";
 
 const DARK_GRAY = "\033[1;30m";
 
-let MOVE_CURSOR_UP = (n) => `\0o033[${n}A`;
-let MOVE_CURSOR_DOWN = (n) => `\0o033[${n}B`;
-let MOVE_CURSOR_RIGHT = (n) => `\0o033[${n}C`;
-let MOVE_CURSOR_LEFT = (n) => `\0o033[${n}D`;
+let MOVE_CURSOR_UP = (n) => "\033[" + n + "A";
+let MOVE_CURSOR_DOWN = (n) => "\033[" + n + "B";
+let MOVE_CURSOR_RIGHT = (n) => "\033[" + n + "C";
+let MOVE_CURSOR_LEFT = (n) => "\033[" + n + "D";
 
 /**
  * Set cursor position (y column x row).
+ * \033[y;xH
+ *
  * @param {column} y
  * @param {row} x
  */
-let MOVE_CURSOR_POSTION = (y, x) => `\0o033[${y};${x}H`;
+let MOVE_CURSOR_POSTION = (y, x) => "\033[" + y + ";" + x + "H";
 
 const LOCAL_IP = (() => {
   let nifaces = require("os").networkInterfaces();
@@ -4112,6 +4114,90 @@ const LOCAL_IP = (() => {
 const PORT = 80;
 const INDEX_PAGE = "index.html";
 const DO_COMPRESS_HTML = true;
+const DO_COMPRESS_JS = true;
+
+/**
+ * REGEXP
+ *
+ * Match the <script></script> tag pair that does not exist in the comment.
+ * (?<!\<\!--[ \r\n]*)<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>(?![ \r\n]*-->)
+ *
+ * Match the pair of <script></script> tags present in the comment.
+ * <script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>
+ *
+ * Match the EL expression.
+ * \$\{([^\}]+)\}
+ *
+ * Match all comments.
+ * <!--([\s\S|\r]*?)-->|\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*
+ *
+ * Match multiple lines of comments.
+ * \/\*(.|\r\n|\n)*?\*\/
+ *
+ * Match single-line comments.
+ * (?<!:.*|<[\s\S]*=")\/\/.*
+ *
+ * Match XML tag comments.
+ * <!--([\s\S|\r]*?)-->
+ *
+ * Match blank lines.
+ * ^\s*\n
+ */
+
+let rmComment = (code) =>
+  code
+    .replace(/<!--([\s\S|\r]*?)-->/gi, "")
+    .replace(/^\s*\n/gim, "")
+    .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) =>
+      args[0]
+        .replace(/(.*)(?=<\/.*script>)/, "")
+        .replace(/(.*)(?=<\/.*style>)/, "")
+    );
+let compressHtml = (html) =>
+  rmComment(html)
+    .replace(/\r+|\n/gi, "")
+    .replace(/[ ]+</gi, "<")
+    .replace(/>[ ]+/gi, ">")
+    .replace(/(?<=.*)[ ]+(?=\/>)/gi, "");
+
+let compressJs = (js) =>
+  rmComment(js)
+    .replace(/\blet\b/gi, "var")
+    .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1")
+    .replace(/`([^`]*)`/gi /* *`*`* */, (...args) => {
+      // let test =
+      //   '<span class="book_content"><img src="/static/img/book_icon.svg"/>' +
+      //   '<a href="javascript:void(0);" onclick="loadPdf(\'" + url+ "\');">《 " + bookName.substring(' +
+      //   "0," +
+      //   'bookName.lastIndexOf(".")' +
+      //   ')+ " 》</a>' +
+      //   "</span>";
+
+      let tmp = args[1];
+      if (
+        tmp.startsWith(`//`) == -1 ||
+        tmp.startsWith("*") ||
+        tmp.endsWith("*/")
+      ) {
+        return tmp;
+      } else {
+        return `"${tmp
+          // Solve the HTML tags escape character " -> \"
+          .replace(/"/gi, '\\"')
+          // Processing methods in all escape character \" -> "
+          .replace(/((?<=\()\\")|\\"(?=\))/gi, `"`)
+          // To solve the problem of the single quotes to invoke the method
+          .replace(/"'(?=\))/gi, `'"`)
+          // String format template
+          .replace(/ *[\r\n]+ */gi, '"\n\t+ "')
+          // Methods a newline in the body
+          .replace(/(?<=\()(.*)(?=\))/gis, (...args) =>
+            args[1].replace(/"\n\t\+ "/gi, "")
+          )
+          // Deal with EL expression
+          .replace(/\$\{([^\}]+)\}/gi, `" + $1 + "`)}"`;
+      }
+    });
 
 function mediaTypeOf(filename) {
   let mimeType;
@@ -4123,17 +4209,26 @@ function mediaTypeOf(filename) {
     }
   }
   if ("" != mimeType) {
-    if (
-      "js" == fileExt ||
+    return "js" == fileExt ||
       "css" == fileExt ||
       "html" == fileExt ||
       "json" == fileExt
-    ) {
-      return `${mimeType};charset=utf-8`;
-    } else {
-      return mimeType;
-    }
+      ? `${mimeType};charset=utf-8`
+      : mimeType;
   }
+}
+
+let commonRespHeaderOf = (contentType, contentLength, strOfDate) => ({
+  Connection: "Keep-Alive",
+  "Content-Type": contentType,
+  "Content-Length": contentLength,
+  Date: strOfDate,
+  Host: LOCAL_IP,
+});
+
+function callBack(resp, status, respHeader, data) {
+  resp.writeHead(status, respHeader);
+  resp.write(data);
 }
 
 let http = require("http");
@@ -4161,25 +4256,33 @@ http
           errHtml
         );
       } else {
+        let fileExt = gotoPathName.trim();
         let compressedData = "";
         compressedData =
-          gotoPathName.trim().endsWith(".html") && DO_COMPRESS_HTML
+          fileExt.endsWith(".html") && DO_COMPRESS_HTML
             ? compressHtml(data.toString())
             : compressedData;
 
-        // compressedData =
-        //   gotoPathName.trim().endsWith(".js") && DO_COMPRESS_HTML
-        //     ? compressJs(data.toString())
-        //     : compressedData;
+        compressedData =
+          fileExt.endsWith(".js") && DO_COMPRESS_JS
+            ? compressJs(data.toString())
+            : compressedData;
 
         callBack(
           resp,
           200,
-          commonRespHeaderOf(
-            mediaTypeOf(gotoPathName),
-            "" == compressedData ? data.length : compressedData.length,
-            strOfDate
-          ),
+          ((shouldDel) => {
+            let tmp = commonRespHeaderOf(
+              mediaTypeOf(gotoPathName),
+              "" == compressedData ? data.length : compressedData.length,
+              strOfDate
+            );
+            if (shouldDel) {
+              delete tmp["Connection"];
+              delete tmp["Content-Length"];
+            }
+            return tmp;
+          })(fileExt.endsWith(".html") | fileExt.endsWith(".js")),
           "" == compressedData ? data : compressedData
         );
       }
@@ -4188,65 +4291,6 @@ http
   })
   .listen(PORT);
 
-let commonRespHeaderOf = (contentType, contentLength, strOfDate) => ({
-  Connection: "Keep-Alive",
-  "Content-Type": contentType,
-  "Content-Length": contentLength,
-  Date: strOfDate,
-  Host: LOCAL_IP,
-});
-
-function callBack(resp, status, respHeader, data) {
-  resp.writeHead(status, respHeader);
-  resp.write(data);
-}
-
-let compressHtml = (html) =>
-  html
-    .replace(/\r+|\n/gi, "")
-    .replace(/[ ]+</gi, "<")
-    .replace(/>[ ]+/gi, ">")
-    .replace(/(?<=")[ ]+(?=\/>)/gi, "");
-
-let compressJs = (js) => js;
-// js
-//   .replace(/\blet\b/gi, "var")
-// (data, status) => {}  -> function (data, status) {}
-// /* .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1") */;
-
-// .replace(/`([^`]*)`/gi /* *`*`* */, (...args) => {
-//   let tmp = args[1];
-//   console.log(tmp);
-//   tmp = tmp.replace(/"/g, '\\"');
-//   if (tmp.startsWith("\n")) {
-//     tmp = '"\\n"' + tmp.substr(1);
-//   }
-//   if (tmp.endsWith("\n")) {
-//     tmp = tmp.substr(0, tmp.length - 1) + '"\\n"';
-//   }
-//   tmp = tmp.replace(/ *([\r\n])+ */g, '"\n\t+ "');
-//   let endsWithModel = tmp.endsWith("}");
-//   if (endsWithModel) {
-//     tmp = tmp.replace(/\}/g, "");
-//   } else {
-//     tmp = tmp.replace(/\}/g, '+"');
-//   }
-
-//   tmp = tmp.replace(/\$\{/g, '" + ');
-//   if (tmp.startsWith("${")) {
-//     tmp = tmp.substr(2);
-//   }
-
-//   return endsWithModel ? `"${tmp}` : `"${tmp}"`;
-// });
-
 console.log(
   `Server running at ${LIGHT_GREEN}${UNDER_LINE}http://${LOCAL_IP}:${PORT}/${NONE} ${LIGHT_GREEN}.${NONE}`
 );
-
-// let a="<span class=\"book_content\"><img src=\"/static/img/book_icon.svg\"/>
-// " + "        <a href=\"javascript:void(0);\" onclick=\"loadPdf('" + url+"');\">《 " + bookName.substring(
-// " + "          0,
-// " + "          bookName.lastIndexOf(\".\")
-// " + "        )+" 》</a>
-// " + "        </span>";
