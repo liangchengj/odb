@@ -2,6 +2,7 @@
  * Created at 2020/05/14 16:57.
  *
  * @author Liangcheng Juves
+ *
  */
 let doc = document;
 let win = window;
@@ -55,7 +56,6 @@ let newEleOf = (tagName, attr) => {
   }
   return ele;
 };
-
 let beforeTitleOf = (...eles) => {
   if (null != eles && undefined != eles) {
     for (let l of links) {
@@ -215,6 +215,7 @@ let loadFullBootstrap = () => {
 
 // Browser environment sniffing
 // Vue 2.6.11
+// TODO
 let inBrowser = typeof window !== "undefined";
 let inWeex = typeof WXEnvironment !== "undefined" && !!WXEnvironment.platform;
 let weexPlatform = inWeex && WXEnvironment.platform.toLowerCase();
@@ -227,3 +228,5 @@ let isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || weexPlatform === "ios";
 let isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
 let isPhantomJS = UA && /phantomjs/.test(UA);
 let isFF = UA && UA.match(/firefox\/(\d+)/);
+
+let test = `amuse.js`;
