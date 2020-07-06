@@ -4,6 +4,8 @@
  * @author Liangcheng Juves
  *
  */
+
+
 let doc = document;
 let win = window;
 let xhr = (() =>
@@ -215,7 +217,6 @@ let loadFullBootstrap = () => {
 
 // Browser environment sniffing
 // Vue 2.6.11
-// TODO
 let inBrowser = typeof window !== "undefined";
 let inWeex = typeof WXEnvironment !== "undefined" && !!WXEnvironment.platform;
 let weexPlatform = inWeex && WXEnvironment.platform.toLowerCase();
@@ -229,4 +230,4 @@ let isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
 let isPhantomJS = UA && /phantomjs/.test(UA);
 let isFF = UA && UA.match(/firefox\/(\d+)/);
 
-let test = `amuse.js`;
+

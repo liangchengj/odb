@@ -1,1 +1,3 @@
-GET https://odb.liangchengj.com/static/js/amuse.js
+GET https://odb.liangchengj.com
+
+Date****: {{$localDatetime rfc1123}}

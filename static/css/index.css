@@ -28,6 +28,10 @@ header {
   background: rgb(30, 30, 30);
 }
 
+.mycss {
+  position: absolute;
+}
+
 header img {
   width: 1.4rem;
   height: 1.4rem;
@@ -110,4 +114,8 @@ footer div {
 
 .book_content a:visited {
   color: rgb(106, 153, 85);
+}
+
+.test {
+  position: absolute;
 }

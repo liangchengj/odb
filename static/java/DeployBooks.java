@@ -18,8 +18,7 @@ public final class DeployBooks {
 
     public static void main(String[] args) throws IOException {
         var execPath = new File("").getAbsolutePath();
-        var pdfPath = execPath.substring(0, execPath.lastIndexOf(separator)) + separator
-                + "pdf";
+        var pdfPath = execPath.substring(0, execPath.lastIndexOf(separator)) + separator + "pdf";
         var appendJson = "";
         for (var pdf : new File(pdfPath).listFiles()) {
             var pdfName = pdf.getName();
@@ -28,11 +27,13 @@ public final class DeployBooks {
             }
         }
         appendJson = "[" + appendJson.substring(0, appendJson.length() - 1) + "]";
-        try (var fos = new FileOutputStream(new File(execPath.substring(0,
-                execPath.lastIndexOf(separator)) + separator
-                + "json", "books.json"))) {
+        try (var fos = new FileOutputStream(
+                new File(execPath.substring(0, execPath.lastIndexOf(separator)) + separator + "json", "books.json"))) {
             fos.write(appendJson.getBytes("utf-8"));
             System.out.println("Deployed OK!   " + new Date());
         }
     }
+
+    // 一段代码
+
 }
