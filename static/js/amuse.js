@@ -132,7 +132,7 @@ let loadDarkMode = () => void jsof("dark_mode.js");
     href: iconHref,
   });
 
-  let linkShortIcon = new newEleOf("link", {
+  let linkShortIcon = newEleOf("link", {
     rel: "shortcut icon",
     type: iconType,
     href: iconHref,
