@@ -4135,7 +4135,7 @@ const DO_COMPRESS_JS = true;
  * \/\*(.|\r\n|\n)*?\*\/
  *
  * Match single-line comments.
- * (?<!:.*|<[\s\S]*="|"|`|'|\/.*)\/\/(.(?!<\/script>))*
+ * (?<!:.*|<[\s\S]*="|"|`|'|\/.*|(\*[\s\S](\*\*\/)*))\/\/(.(?!<\/script>))*
  *
  * Match XML tag comments.
  * <!--([\s\S|\r]*?)-->

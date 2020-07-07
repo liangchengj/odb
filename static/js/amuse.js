@@ -283,24 +283,6 @@ let isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
 let isPhantomJS = UA && /phantomjs/.test(UA);
 let isFF = UA && UA.match(/firefox\/(\d+)/);
 
-function mediaTypeOf(strIncludeFileSuffix) {
-  if (paramIsOK(strIncludeFileSuffix)) {
-    strIncludeFileSuffix = strContainChk(strIncludeFileSuffix, ".")
-      ? strIncludeFileSuffix.substr(strIncludeFileSuffix.lastIndexOf(".") + 1)
-      : strIncludeFileSuffix;
-    for (let ele of MIME_MAPPING) {
-      if (ele.extension == strIncludeFileSuffix) {
-        return strIncludeFileSuffix.endsWith(".html") ||
-          strIncludeFileSuffix.endsWith(".css") ||
-          strIncludeFileSuffix.endsWith(".js") ||
-          strIncludeFileSuffix.endsWith(".xml") ||
-          strIncludeFileSuffix.endsWith(".json")
-          ? `${ele["mime-type"]};charset=utf-8`
-          : ele["mime-type"];
-      }
-    }
-  }
-}
 const MIME_MAPPING = [
   {
     extension: "123",
@@ -4351,6 +4333,24 @@ const MIME_MAPPING = [
     "mime-type": "application/vnd.handheld-entertainment+xml",
   },
 ];
+function mediaTypeOf(strIncludeFileSuffix) {
+  if (paramIsOK(strIncludeFileSuffix)) {
+    strIncludeFileSuffix = strContainChk(strIncludeFileSuffix, ".")
+      ? strIncludeFileSuffix.substr(strIncludeFileSuffix.lastIndexOf(".") + 1)
+      : strIncludeFileSuffix;
+    for (let ele of MIME_MAPPING) {
+      if (ele.extension == strIncludeFileSuffix) {
+        return strIncludeFileSuffix.endsWith(".html") ||
+          strIncludeFileSuffix.endsWith(".css") ||
+          strIncludeFileSuffix.endsWith(".js") ||
+          strIncludeFileSuffix.endsWith(".xml") ||
+          strIncludeFileSuffix.endsWith(".json")
+          ? `${ele["mime-type"]};charset=utf-8`
+          : ele["mime-type"];
+      }
+    }
+  }
+}
 
 function styleOnDarkMode() {
   head.innerHTML = `
@@ -4465,5 +4465,3 @@ function styleOnDarkMode() {
     }
   </style>${head.innerHTML}`;
 }
-
-
