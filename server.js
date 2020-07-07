@@ -4116,6 +4116,8 @@ const INDEX_PAGE = "index.html";
 const DO_COMPRESS_HTML = true;
 const DO_COMPRESS_JS = true;
 
+let a = `https://www.liangchengj.com`;
+
 /**
  * REGEXP
  *
@@ -4135,7 +4137,8 @@ const DO_COMPRESS_JS = true;
  * \/\*(.|\r\n|\n)*?\*\/
  *
  * Match single-line comments.
- * (?<!:.*|<[\s\S]*="|"|`|'|\/.*|(\*[\s\S](\*\*\/)*))\/\/(.(?!<\/script>))*
+ * (?<!:.*|("|`|').*|\b(let|var)\b.*|\/[^\/]*|(\*[\s\S](\*\*\/)*))\/\/.*
+ * test :: (?<!:|\b(let|var)\b.*|`|'|"|\\|\*[\s\S](\*\*\/)*)\/\/.*
  *
  * Match XML tag comments.
  * <!--([\s\S|\r]*?)-->
@@ -4143,7 +4146,6 @@ const DO_COMPRESS_JS = true;
  * Match blank lines.
  * ^\s*\n
  */
-
 let rmComment = (code) =>
   code
     .replace(/<!--([\s\S|\r]*?)-->/gi, "")
@@ -4201,7 +4203,7 @@ let compressJs = (js) =>
               args[1].replace(/"\n\t\+ "/gi, "")
             )
             // Deal with EL expression
-            .replace(/\$\{([^\}]+)\}/gi, `" + $1 + "`)}"`;
+            .replace(/\$\{([^\}]+)\}/gi, `" + $1 + "`)}"`; // a
         }
       }
     );
@@ -4312,4 +4314,12 @@ function HTML_NOT_FOUND(path) {
 // `a`;
 /**
  * `a`
+ */
+
+/**
+ *
+ */
+
+/**
+ * //
  */

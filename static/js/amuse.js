@@ -78,7 +78,7 @@ let afterMetaCharsetOf = (...eles) => {
         undefined != metaCharsetAttr &&
         "" != metaCharsetAttr
       ) {
-        eles.forEach((ele) => head.insertBefore(ele, m.nextElementSibling));
+        eles.forEach((ele) => head.insertBefore(ele, m.nextElementSibling)); 
       }
     }
   }
@@ -218,6 +218,12 @@ let loadJQ = () =>
 //       crossorigin="anonymous"></script>`
 //   );
 // };
+
+
+// <script type="application/javascript"> 
+// a </script>
+
+// <script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 let loadJQSlim = () =>
   jsof(
