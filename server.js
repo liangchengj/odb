@@ -4120,7 +4120,7 @@ const DO_COMPRESS_JS = true;
  * REGEXP
  *
  * Match the <script></script> tag pair that does not exist in the comment.
- * (?<!\<\!--[ \r\n]*)<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>(?![ \r\n]*-->)
+ * (?<!\<\!--[ \n]*)<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>(?![ \n]*-->)
  *
  * Match the pair of <script></script> tags present in the comment.
  * <script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>
@@ -4147,12 +4147,13 @@ const DO_COMPRESS_JS = true;
 let rmComment = (code) =>
   code
     .replace(/<!--([\s\S|\r]*?)-->/gi, "")
-    .replace(/^\s*\n/gim, "")
-    .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) =>
-      args[0]
-        .replace(/(.*)(?=<\/.*script>)/, "")
-        .replace(/(.*)(?=<\/.*style>)/, "")
-    );
+    .replace(/\/\*(.|\r\n|\n)*?\*\//gi, "")
+    .replace(/^\s\S*\n/gim, "");
+// .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) =>
+//   args[0]
+//     .replace(/(.*)(?=<\/.*script>)/, "")
+//     .replace(/(.*)(?=<\/.*style>)/, "")
+// );
 let compressHtml = (html) =>
   rmComment(html)
     .replace(/\r+|\n/gi, "")
@@ -4162,42 +4163,48 @@ let compressHtml = (html) =>
 
 let compressJs = (js) =>
   rmComment(js)
-    .replace(/\blet\b/gi, "var")
+    .replace(/\blet\b(?=\=|\bin\b|\bof\b)*/gi, "var")
+    // (\([^(]*\))\s*=>(?!.\{)([^;])*
     .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1")
-    .replace(/`([^`]*)`/gi /* *`*`* */, (...args) => {
-      // let test =
-      //   '<span class="book_content"><img src="/static/img/book_icon.svg"/>' +
-      //   '<a href="javascript:void(0);" onclick="loadPdf(\'" + url+ "\');">《 " + bookName.substring(' +
-      //   "0," +
-      //   'bookName.lastIndexOf(".")' +
-      //   ')+ " 》</a>' +
-      //   "</span>";
+    .replace(
+      /(?<!(\/\/[\s\S])|(\*[\s\S](\*\*\/)*))`([\s\S]*)`(?!\*\/*)/gi /* *`*`* */,
+      (...args) => {
+        // let test =
+        //   '<span class="book_content"><img src="/static/img/book_icon.svg"/>' +
+        //   '<a href="javascript:void(0);" onclick="loadPdf(\'" + url+ "\');">《 " + bookName.substring(' +
+        //   "0," +
+        //   'bookName.lastIndexOf(".")' +
+        //   ')+ " 》</a>' +
+        //   "</span>";
 
-      let tmp = args[1];
-      if (
-        tmp.startsWith(`//`) == -1 ||
-        tmp.startsWith("*") ||
-        tmp.endsWith("*/")
-      ) {
-        return tmp;
-      } else {
-        return `"${tmp
-          // Solve the HTML tags escape character " -> \"
-          .replace(/"/gi, '\\"')
-          // Processing methods in all escape character \" -> "
-          .replace(/((?<=\()\\")|\\"(?=\))/gi, `"`)
-          // To solve the problem of the single quotes to invoke the method
-          .replace(/"'(?=\))/gi, `'"`)
-          // String format template
-          .replace(/ *[\r\n]+ */gi, '"\n\t+ "')
-          // Methods a newline in the body
-          .replace(/(?<=\()(.*)(?=\))/gis, (...args) =>
-            args[1].replace(/"\n\t\+ "/gi, "")
-          )
-          // Deal with EL expression
-          .replace(/\$\{([^\}]+)\}/gi, `" + $1 + "`)}"`;
+        let tmp = args[1];
+        if (
+          tmp.startsWith(`//`) == -1 ||
+          tmp.startsWith("*") ||
+          tmp.endsWith("*/")
+        ) {
+          return tmp;
+        } else {
+          return `"${tmp
+            // Handle \` escape characters in template strings
+            .replace(/\`/gi, "")
+            // Solve the HTML tags escape character " -> \"
+            .replace(/"/gi, '\\"')
+            // Processing methods in all escape character \" -> "
+            .replace(/((?<=\()\\")|\\"(?=\))/gi, `"`)
+            // To solve the problem of the single quotes to invoke the method
+            .replace(/"'(?=\))/gi, `'"`)
+            // String format template
+            .replace(/ *[\r\n]+ */gi, '"\n\t+ "')
+            // Methods a newline in the body
+            .replace(/(?<=\()(.*)(?=\))/gis, (...args) =>
+              args[1].replace(/"\n\t\+ "/gi, "")
+            )
+            // Deal with EL expression
+            .replace(/\$\{([^\}]+)\}/gi, `" + $1 + "`)}"`;
+        }
       }
-    });
+    );
 
 function mediaTypeOf(filename) {
   let mimeType;
@@ -4243,12 +4250,15 @@ http
       `   ${LIGHT_BLUE}[ ${strOfDate} ]${NONE}   Request for ${UNDER_LINE}${LIGHT_CYAN}${pathname}${NONE} received.`
     );
     let gotoPathName = pathname.substr(1);
-
+    gotoPathName =
+      fs.existsSync(gotoPathName) && fs.statSync(gotoPathName).isDirectory()
+        ? `${gotoPathName}/${INDEX_PAGE}`
+        : gotoPathName;
     gotoPathName = "" == gotoPathName ? INDEX_PAGE : gotoPathName;
 
     fs.readFile(gotoPathName, (err, data) => {
       if (err) {
-        let errHtml = `<!-- ${strOfDate} --><h2><br/>&nbsp;&nbsp;Not Found => "${pathname}"</h2>`;
+        let errHtml = HTML_NOT_FOUND(pathname);
         callBack(
           resp,
           404,
@@ -4294,3 +4304,12 @@ http
 console.log(
   `Server running at ${LIGHT_GREEN}${UNDER_LINE}http://${LOCAL_IP}:${PORT}/${NONE} ${LIGHT_GREEN}.${NONE}`
 );
+
+function HTML_NOT_FOUND(path) {
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>server.js [ 404 ]</title><style rel="stylesheet" type="text/css">* {        margin: 0;        padding: 0;        color: #6e9f60;        font-family: Menlo;        font-size: 1.2rem;      }      body div {        position: absolute;        left: 50%;        top: 50%;        transform: translate(-50%, -50%);        text-align: center;      }</style></head><body><div><svg        t="1594129257084"        class="icon"        viewBox="0 0 1024 1024"        version="1.1"        xmlns="http://www.w3.org/2000/svg"        p-id="800"        xmlns:xlink="http://www.w3.org/1999/xlink"        width="380"        height="380"      ><defs><style type="text/css"/></defs><path          d="M506.9 786.4c-3 0-5.9-0.8-8.5-2.3l-27-16c-4-2.3-2.1-3.1-0.7-3.5 5.4-1.9 6.5-2.3 12.2-5.6 0.6-0.3 1.4-0.2 2 0.1l20.8 12.3c0.7 0.4 1.8 0.4 2.5 0l80.9-46.7c0.7-0.4 1.2-1.3 1.2-2.2v-93.4c0-0.9-0.5-1.8-1.3-2.2l-80.9-46.7c-0.7-0.4-1.7-0.4-2.5 0L424.8 627c-0.8 0.4-1.3 1.3-1.3 2.2v93.4c0 0.9 0.5 1.7 1.3 2.2l22.2 12.8c12 6 19.4-1.1 19.4-8.2v-92.2c0-1.3 1-2.3 2.3-2.3h10.2c1.3 0 2.3 1 2.3 2.3v92.2c0 16-8.7 25.3-24 25.3-4.7 0-8.4 0-18.7-5.1l-21.2-12.2c-5.2-3-8.5-8.7-8.5-14.8v-93.4c0-6.1 3.2-11.7 8.5-14.7l81-46.7c5.1-2.9 11.9-2.9 17 0l80.9 46.7c5.2 3 8.5 8.7 8.5 14.7v93.4c0 6.1-3.3 11.7-8.5 14.7L515.3 784c-2.5 1.6-5.5 2.3-8.4 2.4"          fill="#689F63"          p-id="801"/><path          d="M531.9 722c-35.4 0-42.8-16.3-42.8-29.9 0-1.3 1-2.3 2.3-2.3h10.5c1.2 0 2.1 0.8 2.3 2 1.6 10.6 6.3 16 27.7 16 17.1 0 24.3-3.9 24.3-12.9 0-5.2-2.1-9.1-28.6-11.7-22.2-2.2-35.9-7.1-35.9-24.8 0-16.3 13.8-26 36.8-26 25.9 0 38.7 9 40.4 28.3 0.1 0.7-0.2 1.3-0.6 1.8-0.4 0.5-1.1 0.7-1.7 0.7h-10.5c-1.1 0-2-0.8-2.3-1.8-2.5-11.2-8.6-14.8-25.3-14.8-18.6 0-20.8 6.5-20.8 11.3 0 5.9 2.6 7.6 27.7 10.9 24.9 3.3 36.7 8 36.7 25.4 0 17.6-14.7 27.7-40.3 27.7m98.5-98.8h2.7c2.2 0 2.7-1.6 2.7-2.5 0-2.4-1.6-2.4-2.6-2.4h-2.8v4.9z m-3.3-7.6h6c2.1 0 6.1 0 6.1 4.6 0 3.2-2.1 3.9-3.3 4.3 2.4 0.2 2.6 1.7 2.9 4 0.2 1.4 0.4 3.8 0.9 4.6h-3.7c-0.1-0.8-0.7-5.3-0.7-5.5-0.2-1-0.6-1.5-1.8-1.5h-3.1v7H627v-17.5z m-7.2 8.7c0 7.3 5.9 13.1 13 13.1 7.3 0 13.1-6 13.1-13.1 0-7.3-5.9-13-13.1-13-7.1-0.1-13.1 5.6-13 13m28.6 0c0 8.6-7 15.6-15.6 15.6-8.5 0-15.6-6.9-15.6-15.6 0-8.8 7.3-15.6 15.6-15.6 8.4 0 15.6 6.8 15.6 15.6"          fill="#689F63"          p-id="802"/><path          d="M256.3 421c0-3.7-2-7.1-5.2-9l-85.8-49.4c-1.4-0.9-3.1-1.3-4.7-1.4h-0.9c-1.6 0.1-3.3 0.5-4.7 1.4L69.2 412c-3.2 1.9-5.2 5.3-5.2 9l0.2 133c0 1.8 1 3.6 2.6 4.5 1.6 1 3.6 1 5.1 0l51-29.2c3.2-1.9 5.2-5.3 5.2-9v-62.1c0-3.7 2-7.1 5.2-9l21.7-12.5c1.6-0.9 3.4-1.4 5.2-1.4 1.8 0 3.6 0.5 5.2 1.4l21.7 12.5c3.2 1.8 5.2 5.3 5.2 9v62.1c0 3.7 2 7.1 5.2 9l51 29.2c1.6 1 3.6 1 5.2 0 1.6-0.9 2.6-2.6 2.6-4.5V421z m404.8 69.2c0 0.9-0.5 1.8-1.3 2.2l-29.5 17c-0.8 0.5-1.8 0.5-2.6 0l-29.5-17c-0.8-0.5-1.3-1.3-1.3-2.2v-34c0-0.9 0.5-1.8 1.3-2.2l29.5-17c0.8-0.5 1.8-0.5 2.6 0l29.5 17c0.8 0.5 1.3 1.3 1.3 2.2v34z m8-251.9c-1.6-0.9-3.6-0.9-5.2 0.1-1.6 0.9-2.6 2.6-2.6 4.5v131.7c0 1.3-0.7 2.5-1.8 3.1-1.1 0.6-2.5 0.6-3.6 0l-21.5-12.4c-3.2-1.9-7.1-1.9-10.4 0l-85.8 49.5c-3.2 1.8-5.2 5.3-5.2 9v99.1c0 3.7 2 7.1 5.2 9l85.8 49.6c3.2 1.8 7.1 1.8 10.4 0l85.8-49.6c3.2-1.9 5.2-5.3 5.2-9V275.8c0-3.8-2-7.2-5.3-9.1l-51-28.4z m285.7 217c3.2-1.9 5.2-5.3 5.2-9v-24c0-3.7-2-7.1-5.2-9l-85.3-49.5a10.2 10.2 0 0 0-10.4 0l-85.8 49.5c-3.2 1.9-5.2 5.3-5.2 9v99c0 3.7 2 7.2 5.2 9l85.3 48.6c3.1 1.8 7 1.8 10.2 0.1l51.6-28.7c1.6-0.9 2.7-2.6 2.7-4.5s-1-3.6-2.6-4.5l-86.3-49.5c-1.6-0.9-2.6-2.6-2.6-4.5v-31.1c0-1.9 1-3.6 2.6-4.5l26.9-15.5c1.6-0.9 3.6-0.9 5.2 0l26.9 15.5c1.6 0.9 2.6 2.6 2.6 4.5v24.4c0 1.8 1 3.6 2.6 4.5 1.6 0.9 3.6 0.9 5.2 0l51.2-29.8z"          fill="#231815"          p-id="803"/><path          d="M863.1 450.7c0.6-0.4 1.4-0.4 2 0l16.5 9.5c0.6 0.4 1 1 1 1.7v19c0 0.7-0.4 1.4-1 1.7l-16.5 9.5c-0.6 0.4-1.4 0.4-2 0l-16.5-9.5c-0.6-0.4-1-1-1-1.7v-19c0-0.7 0.4-1.4 1-1.7l16.5-9.5zM487.5 415.6l-0.2-0.2c-0.1-0.1-0.2-0.2-0.4-0.3-0.2-0.2-0.5-0.4-0.7-0.6-0.1-0.1-0.1-0.1-0.2-0.1l-0.9-0.6-55.9-32.3-8.9-5.1-20.6-11.9c-0.9-0.5-1.8-0.8-2.7-1.1-0.8-0.2-1.6-0.3-2.4-0.3H393.6h-0.1c-0.2 0-0.4 0.1-0.6 0.1-0.2 0-0.4 0.1-0.5 0.1-0.2 0.1-0.5 0.1-0.7 0.2-0.1 0-0.3 0.1-0.4 0.1-0.3 0.1-0.5 0.2-0.7 0.3h-0.1c-0.3 0.1-0.6 0.3-0.9 0.5l-65.8 38-19.3 11.1-0.2 0.1c-3.2 1.8-5.2 5.2-5.2 8.9v98.6c0 2.3 0.8 4.5 2.1 6.3 0.2 0.3 0.5 0.6 0.8 0.9l0.2 0.2c0.2 0.2 0.5 0.4 0.7 0.7l0.2 0.2c0.3 0.3 0.7 0.5 1.1 0.7l74.4 43 11 6.3c0.9 0.5 1.8 0.9 2.8 1.1 0.2 0 0.4 0.1 0.5 0.1 0.3 0 0.5 0.1 0.8 0.1 0.3 0 0.5 0 0.8 0.1h0.3c0.4 0 0.7 0 1.1-0.1h0.4c0.3 0 0.6-0.1 0.9-0.2 0.1 0 0.2 0 0.3-0.1h0.2l0.9-0.3c0.1 0 0.1 0 0.2-0.1l1.2-0.6 85.3-49.3c2.6-1.5 4.4-4.2 5-7.1 0.1-0.6 0.2-1.2 0.2-1.8v-98.6c-0.2-2.7-1.2-5.2-3-7z"          fill="#689F63"          p-id="804"/></svg><br/><br/><br/><span>Not found =>&nbsp;\`${path}\`</span></div></body></html>`;
+}
+
+// `a`;
+/**
+ * `a`
+ */

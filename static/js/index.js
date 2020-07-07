@@ -8,11 +8,12 @@
   loadVue();
   titleOf(`Liangcheng Juves' Support Contens`);
   useDefFont();
+  jsof("/static/js/index.js");
 })();
 
 function loadPdf(url) {
   $(".content").css({
-    display: "flex"
+    display: "flex",
   });
   $(".content").show();
   wlhref(url);
@@ -32,9 +33,9 @@ $(() => {
         $("body main div")
           .append(`<span class="book_content"><img src="/static/img/book_icon.svg"/>
           <a href="javascript:void(0);" onclick="loadPdf('${url}');">《 ${bookName.substring(
-            0,
-            bookName.lastIndexOf(".")
-          )} 》</a>
+          0,
+          bookName.lastIndexOf(".")
+        )} 》</a>
         </span>`);
       }
     }
@@ -172,5 +173,3 @@ $(() => {
 //       "但同时应遵守著作权法及其他相关法律的规定，不得侵犯本网站及相关权利人的合法权利。"
 //   );
 // });
-
-
