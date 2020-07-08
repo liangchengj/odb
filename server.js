@@ -72,38 +72,45 @@ const DO_COMPRESS_JS = true;
 let a = `https://www.liangchengj.com`;
 
 /**
+ * ${LIGHT_BLUE}
+ */
+
+/**
  * REGEXP
  *
  * Match the <script></script> tag pair that does not exist in the comment.
- * (?<!\<\!--[ \n]*)<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>(?![ \n]*-->)
+ * (?<!<!--[ \n]*|(\*[\s\S](\*\*\/)*|\/\/|#|--).*)<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>(?![ \n]*-->)
  *
  * Match the pair of <script></script> tags present in the comment.
  * <script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>
  *
  * Match the EL expression.
- * \$\{([^\}]+)\}
+ * (?<!(\/\/|#|--|\*[\s\S](\*\*\/)*).*|<!--[ \n]*)\$\{([^\}]+)\}(?![ \n]*-->)
  *
  * Match all comments.
  * <!--([\s\S|\r]*?)-->|\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*
  *
  * Match multiple lines of comments.
- * \/\*(.|\r\n|\n)*?\*\/
+ * (?<!\/\/|#|--.*|<!--[ \n]*)\/\*[\s\S\n]*?\*\/(?![ \n]*-->)
  *
  * Match single-line comments.
  * (?<!:.*|("|`|').*|\b(let|var)\b.*|\/[^\/]*|(\*[\s\S](\*\*\/)*))\/\/.*
  * test :: (?<!(:|\b(let|var)\b|\*[\s\S](\*\*\/)*|#|--).*|\\|((`|'|")[^\/]*))\/\/.*
  *
  * Match XML tag comments.
- * (?<!(\/\/|#|--).*|\*[\s\S](\*\*\/)*)<!--([\s\S\r]*?)-->
+ * (?<!(\/\/|#|--|\*[\s\S](\*\*\/)*).*)<!--([\s\S\n]*?)-->
  *
  * Match blank lines.
  * ^\s*\n
+ * 
+ * Match the ES character template.
+ * (?<!\\|(\/\/|\*[\s\S](\*\*\/)*|#|--).*)`([\s\S\n]*?)[^\\]`
+ * 
  */
-let rmComment = (code) => code;
+let rmComment = (code) => code; // .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) =>
 // .replace(/<!--([\s\S|\r]*?)-->/gi, "")
 // .replace(/\/\*(.|\r\n|\n)*?\*\//gi, "")
-/*  .replace(/^\s\S*\n/gim, "") */ // .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) =>
-//   args[0]
+/*  .replace(/^\s\S*\n/gim, "") */ //   args[0]
 //     .replace(/(.*)(?=<\/.*script>)/, "")
 //     .replace(/(.*)(?=<\/.*style>)/, "")
 // );
