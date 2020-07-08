@@ -395,7 +395,7 @@ input.input100 {
 }
 
 .input-checkbox100:checked + .label-checkbox100::before {
-  color: #55C678;
+  color: #55c678;
 }
 
 /*------------------------------------------------------------------
@@ -421,7 +421,7 @@ input.input100 {
   padding: 0 20px;
   min-width: 160px;
   height: 50px;
-  background-color: #55C678;
+  background-color: #55c678;
   border-radius: 25px;
 
   font-family: Poppins-Regular;

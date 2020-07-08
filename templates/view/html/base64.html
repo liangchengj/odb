@@ -1,220 +1,233 @@
 <!-- @author Liangcheng Juves -->
 <!-- Created at 2020/6/12 14:51 -->
-<!Doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <script src="/static/js/amuse.js"></script>
-    <script type="application/javascript">loadCommonHead('Base64 Table');</script>
+    <script type="application/javascript">
+      loadCommonHead("Base64 Table");
+    </script>
     <!-- The latest version of the Bootstrap core CSS file -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
 
     <!-- Optional Bootstrap theme file (generally does not need to be introduced) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+      crossorigin="anonymous"
+    />
 
     <!-- Latest Bootstrap core JavaScript file -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" cross></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+      cross
+    ></script>
     <style rel="stylesheet" type="text/css">
-        * {
-            margin: 0px;
-            padding: 0px;
-            font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons",
-            "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
-        }
+      * {
+        margin: 0px;
+        padding: 0px;
+        font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons",
+          "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+      }
 
-        body table {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
+      body table {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
 
-        body table tr td {
-            padding: 0.5rem 1.5rem;
-        }
+      body table tr td {
+        padding: 0.5rem 1.5rem;
+      }
 
-        #firstTr {
-            font-weight: bold;
-        }
+      #firstTr {
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
-<table class="table-striped table-bordered table-hover">
-    <tbody>
-    <tr id="firstTr">
-        <td style="text-align:center;">Value</td>
-        <td style="text-align:center;">Char</td>
-        <td style="text-align:center;">Value</td>
-        <td style="text-align:center;">Char</td>
-        <td style="text-align:center;">Value</td>
-        <td style="text-align:center;">Char</td>
-        <td style="text-align:center;">Value</td>
-        <td style="text-align:center;">Char</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">0</td>
-        <td style="text-align:center;">A</td>
-        <td style="text-align:center;">16</td>
-        <td style="text-align:center;">Q</td>
-        <td style="text-align:center;">32</td>
-        <td style="text-align:center;">g</td>
-        <td style="text-align:center;">48</td>
-        <td style="text-align:center;">w</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">1</td>
-        <td style="text-align:center;">B</td>
-        <td style="text-align:center;">17</td>
-        <td style="text-align:center;">R</td>
-        <td style="text-align:center;">33</td>
-        <td style="text-align:center;">h</td>
-        <td style="text-align:center;">49</td>
-        <td style="text-align:center;">x</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">2</td>
-        <td style="text-align:center;">C</td>
-        <td style="text-align:center;">18</td>
-        <td style="text-align:center;">S</td>
-        <td style="text-align:center;">34</td>
-        <td style="text-align:center;">i</td>
-        <td style="text-align:center;">50</td>
-        <td style="text-align:center;">y</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">3</td>
-        <td style="text-align:center;">D</td>
-        <td style="text-align:center;">19</td>
-        <td style="text-align:center;">T</td>
-        <td style="text-align:center;">35</td>
-        <td style="text-align:center;">j</td>
-        <td style="text-align:center;">51</td>
-        <td style="text-align:center;">z</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">4</td>
-        <td style="text-align:center;">E</td>
-        <td style="text-align:center;">20</td>
-        <td style="text-align:center;">U</td>
-        <td style="text-align:center;">36</td>
-        <td style="text-align:center;">k</td>
-        <td style="text-align:center;">52</td>
-        <td style="text-align:center;">0</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">5</td>
-        <td style="text-align:center;">F</td>
-        <td style="text-align:center;">21</td>
-        <td style="text-align:center;">V</td>
-        <td style="text-align:center;">37</td>
-        <td style="text-align:center;">l</td>
-        <td style="text-align:center;">53</td>
-        <td style="text-align:center;">1</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">6</td>
-        <td style="text-align:center;">G</td>
-        <td style="text-align:center;">22</td>
-        <td style="text-align:center;">W</td>
-        <td style="text-align:center;">38</td>
-        <td style="text-align:center;">m</td>
-        <td style="text-align:center;">54</td>
-        <td style="text-align:center;">2</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">7</td>
-        <td style="text-align:center;">H</td>
-        <td style="text-align:center;">23</td>
-        <td style="text-align:center;">X</td>
-        <td style="text-align:center;">39</td>
-        <td style="text-align:center;">n</td>
-        <td style="text-align:center;">55</td>
-        <td style="text-align:center;">3</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">8</td>
-        <td style="text-align:center;">I</td>
-        <td style="text-align:center;">24</td>
-        <td style="text-align:center;">Y</td>
-        <td style="text-align:center;">40</td>
-        <td style="text-align:center;">o</td>
-        <td style="text-align:center;">56</td>
-        <td style="text-align:center;">4</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">9</td>
-        <td style="text-align:center;">J</td>
-        <td style="text-align:center;">25</td>
-        <td style="text-align:center;">Z</td>
-        <td style="text-align:center;">41</td>
-        <td style="text-align:center;">p</td>
-        <td style="text-align:center;">57</td>
-        <td style="text-align:center;">5</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">10</td>
-        <td style="text-align:center;">K</td>
-        <td style="text-align:center;">26</td>
-        <td style="text-align:center;">a</td>
-        <td style="text-align:center;">42</td>
-        <td style="text-align:center;">q</td>
-        <td style="text-align:center;">58</td>
-        <td style="text-align:center;">6</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">11</td>
-        <td style="text-align:center;">L</td>
-        <td style="text-align:center;">27</td>
-        <td style="text-align:center;">b</td>
-        <td style="text-align:center;">43</td>
-        <td style="text-align:center;">r</td>
-        <td style="text-align:center;">59</td>
-        <td style="text-align:center;">7</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">12</td>
-        <td style="text-align:center;">M</td>
-        <td style="text-align:center;">28</td>
-        <td style="text-align:center;">c</td>
-        <td style="text-align:center;">44</td>
-        <td style="text-align:center;">s</td>
-        <td style="text-align:center;">60</td>
-        <td style="text-align:center;">8</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">13</td>
-        <td style="text-align:center;">N</td>
-        <td style="text-align:center;">29</td>
-        <td style="text-align:center;">d</td>
-        <td style="text-align:center;">45</td>
-        <td style="text-align:center;">t</td>
-        <td style="text-align:center;">61</td>
-        <td style="text-align:center;">9</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">14</td>
-        <td style="text-align:center;">O</td>
-        <td style="text-align:center;">30</td>
-        <td style="text-align:center;">e</td>
-        <td style="text-align:center;">46</td>
-        <td style="text-align:center;">u</td>
-        <td style="text-align:center;">62</td>
-        <td style="text-align:center;">+</td>
-    </tr>
-    <tr>
-        <td style="text-align:center;">15</td>
-        <td style="text-align:center;">P</td>
-        <td style="text-align:center;">31</td>
-        <td style="text-align:center;">f</td>
-        <td style="text-align:center;">47</td>
-        <td style="text-align:center;">v</td>
-        <td style="text-align:center;">63</td>
-        <td style="text-align:center;">/</td>
-    </tr>
-    </tbody>
-</table>
-</body>
+  </head>
+  <body>
+    <table class="table-striped table-bordered table-hover">
+      <tbody>
+        <tr id="firstTr">
+          <td style="text-align: center;">Value</td>
+          <td style="text-align: center;">Char</td>
+          <td style="text-align: center;">Value</td>
+          <td style="text-align: center;">Char</td>
+          <td style="text-align: center;">Value</td>
+          <td style="text-align: center;">Char</td>
+          <td style="text-align: center;">Value</td>
+          <td style="text-align: center;">Char</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">0</td>
+          <td style="text-align: center;">A</td>
+          <td style="text-align: center;">16</td>
+          <td style="text-align: center;">Q</td>
+          <td style="text-align: center;">32</td>
+          <td style="text-align: center;">g</td>
+          <td style="text-align: center;">48</td>
+          <td style="text-align: center;">w</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">1</td>
+          <td style="text-align: center;">B</td>
+          <td style="text-align: center;">17</td>
+          <td style="text-align: center;">R</td>
+          <td style="text-align: center;">33</td>
+          <td style="text-align: center;">h</td>
+          <td style="text-align: center;">49</td>
+          <td style="text-align: center;">x</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">2</td>
+          <td style="text-align: center;">C</td>
+          <td style="text-align: center;">18</td>
+          <td style="text-align: center;">S</td>
+          <td style="text-align: center;">34</td>
+          <td style="text-align: center;">i</td>
+          <td style="text-align: center;">50</td>
+          <td style="text-align: center;">y</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">3</td>
+          <td style="text-align: center;">D</td>
+          <td style="text-align: center;">19</td>
+          <td style="text-align: center;">T</td>
+          <td style="text-align: center;">35</td>
+          <td style="text-align: center;">j</td>
+          <td style="text-align: center;">51</td>
+          <td style="text-align: center;">z</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">4</td>
+          <td style="text-align: center;">E</td>
+          <td style="text-align: center;">20</td>
+          <td style="text-align: center;">U</td>
+          <td style="text-align: center;">36</td>
+          <td style="text-align: center;">k</td>
+          <td style="text-align: center;">52</td>
+          <td style="text-align: center;">0</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">5</td>
+          <td style="text-align: center;">F</td>
+          <td style="text-align: center;">21</td>
+          <td style="text-align: center;">V</td>
+          <td style="text-align: center;">37</td>
+          <td style="text-align: center;">l</td>
+          <td style="text-align: center;">53</td>
+          <td style="text-align: center;">1</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">6</td>
+          <td style="text-align: center;">G</td>
+          <td style="text-align: center;">22</td>
+          <td style="text-align: center;">W</td>
+          <td style="text-align: center;">38</td>
+          <td style="text-align: center;">m</td>
+          <td style="text-align: center;">54</td>
+          <td style="text-align: center;">2</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">7</td>
+          <td style="text-align: center;">H</td>
+          <td style="text-align: center;">23</td>
+          <td style="text-align: center;">X</td>
+          <td style="text-align: center;">39</td>
+          <td style="text-align: center;">n</td>
+          <td style="text-align: center;">55</td>
+          <td style="text-align: center;">3</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">8</td>
+          <td style="text-align: center;">I</td>
+          <td style="text-align: center;">24</td>
+          <td style="text-align: center;">Y</td>
+          <td style="text-align: center;">40</td>
+          <td style="text-align: center;">o</td>
+          <td style="text-align: center;">56</td>
+          <td style="text-align: center;">4</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">9</td>
+          <td style="text-align: center;">J</td>
+          <td style="text-align: center;">25</td>
+          <td style="text-align: center;">Z</td>
+          <td style="text-align: center;">41</td>
+          <td style="text-align: center;">p</td>
+          <td style="text-align: center;">57</td>
+          <td style="text-align: center;">5</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">10</td>
+          <td style="text-align: center;">K</td>
+          <td style="text-align: center;">26</td>
+          <td style="text-align: center;">a</td>
+          <td style="text-align: center;">42</td>
+          <td style="text-align: center;">q</td>
+          <td style="text-align: center;">58</td>
+          <td style="text-align: center;">6</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">11</td>
+          <td style="text-align: center;">L</td>
+          <td style="text-align: center;">27</td>
+          <td style="text-align: center;">b</td>
+          <td style="text-align: center;">43</td>
+          <td style="text-align: center;">r</td>
+          <td style="text-align: center;">59</td>
+          <td style="text-align: center;">7</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">12</td>
+          <td style="text-align: center;">M</td>
+          <td style="text-align: center;">28</td>
+          <td style="text-align: center;">c</td>
+          <td style="text-align: center;">44</td>
+          <td style="text-align: center;">s</td>
+          <td style="text-align: center;">60</td>
+          <td style="text-align: center;">8</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">13</td>
+          <td style="text-align: center;">N</td>
+          <td style="text-align: center;">29</td>
+          <td style="text-align: center;">d</td>
+          <td style="text-align: center;">45</td>
+          <td style="text-align: center;">t</td>
+          <td style="text-align: center;">61</td>
+          <td style="text-align: center;">9</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">14</td>
+          <td style="text-align: center;">O</td>
+          <td style="text-align: center;">30</td>
+          <td style="text-align: center;">e</td>
+          <td style="text-align: center;">46</td>
+          <td style="text-align: center;">u</td>
+          <td style="text-align: center;">62</td>
+          <td style="text-align: center;">+</td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">15</td>
+          <td style="text-align: center;">P</td>
+          <td style="text-align: center;">31</td>
+          <td style="text-align: center;">f</td>
+          <td style="text-align: center;">47</td>
+          <td style="text-align: center;">v</td>
+          <td style="text-align: center;">63</td>
+          <td style="text-align: center;">/</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>

@@ -1,7 +1,3 @@
-
-
-
-
 const TABLE_BASE64 = [
   "A",
   "B",

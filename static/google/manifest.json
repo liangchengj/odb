@@ -1,9 +1,6 @@
 {
   "background": {
-    "scripts": [
-      "lib/sea.js",
-      "bg.js"
-    ]
+    "scripts": ["lib/sea.js", "bg.js"]
   },
   "browser_action": {
     "default_icon": "icons/icon.png",
@@ -13,13 +10,8 @@
   "content_scripts": [
     {
       "all_frames": false,
-      "js": [
-        "straightGoogle.js"
-      ],
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
+      "js": ["straightGoogle.js"],
+      "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_end"
     }
   ],
@@ -49,7 +41,5 @@
     "ftp://*/*"
   ],
   "version": "5.30",
-  "web_accessible_resources": [
-    "index.html"
-  ]
+  "web_accessible_resources": ["index.html"]
 }

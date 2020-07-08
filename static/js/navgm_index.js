@@ -4,13 +4,8 @@
  */
 loadJQMin();
 loadDarkMode();
-loadCommonHead('Navigation Menu');
-
+loadCommonHead("Navigation Menu");
 
 $(function () {
-    alert("test");
+  alert("test");
 });
-
-
-
-
