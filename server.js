@@ -95,7 +95,7 @@ let a = `https://www.liangchengj.com`;
  *
  * Match single-line comments.
  * (?<!:.*|("|`|').*|\b(let|var)\b.*|\/[^\/]*|(\*[\s\S](\*\*\/)*))\/\/.*
- * test :: (?<!(:|\b(let|var)\b|\*[\s\S](\*\*\/)*|#|--).*|\\|((`|'|")[^\/]*))\/\/.*
+ * test :: (?<!(:|#|--).*|\\|\b(let|var)\b.*=[ ]*|((`|'|")[^\/]*))\/\/.*
  *
  * Match XML tag comments.
  * (?<!(\/\/|#|--|\*[\s\S](\*\*\/)*).*)<!--([\s\S\n]*?)-->
@@ -104,9 +104,12 @@ let a = `https://www.liangchengj.com`;
  * ^\s*\n
  * 
  * Match the ES character template.
- * (?<!\\|(\/\/|\*[\s\S](\*\*\/)*|#|--).*)`([\s\S\n]*?)[^\\]`
+ * (?<!(\\|(\/\/|\*[\s\S](\*\*\/)*|#|--).*)|<!--[\s\S])`([\s\S\n]*?)[^\\](?!=[\s\S]-->*)`
  * 
  */
+
+ let a =  //
+
 let rmComment = (code) => code; // .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) =>
 // .replace(/<!--([\s\S|\r]*?)-->/gi, "")
 // .replace(/\/\*(.|\r\n|\n)*?\*\//gi, "")
@@ -114,6 +117,9 @@ let rmComment = (code) => code; // .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\
 //     .replace(/(.*)(?=<\/.*script>)/, "")
 //     .replace(/(.*)(?=<\/.*style>)/, "")
 // );
+
+
+
 let compressHtml = (html) =>
   rmComment(html)
     .replace(/\r+|\n/gi, "")
@@ -259,7 +265,7 @@ function HTML_NOT_FOUND(path) {
  *
  */
 
-/**
+/** 
  * //
  */
 
