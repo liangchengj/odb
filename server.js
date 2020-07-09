@@ -69,7 +69,7 @@ const INDEX_PAGE = "index.html";
 const DO_COMPRESS_HTML = true;
 const DO_COMPRESS_JS = true;
 
-let a = `https://www.liangchengj.com`;
+// let a = `https://www.liangchengj.com`;
 
 /**
  * ${LIGHT_BLUE}
@@ -108,7 +108,7 @@ let a = `https://www.liangchengj.com`;
  * 
  */
 
- let a =  //
+//  let a =  //
 
 let rmComment = (code) => code; // .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) =>
 // .replace(/<!--([\s\S|\r]*?)-->/gi, "")
