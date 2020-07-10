@@ -20,17 +20,15 @@
         justify-content: center;
         align-items: center;
       }
-
       body ul {
         margin-top: 6.5rem;
       }
-
       body ul li {
         list-style-type: none;
         height: 6rem;
       }
 
-      body ul li input[type="text"] {
+      .li-input-text {
         border: 0px;
         background: #1c1c1e;
         border-radius: 0.5rem;
@@ -40,11 +38,11 @@
       }
 
       body ul li,
-      body ul li input[type="text"] {
+      .li-input-text {
         font-size: 1.3rem;
       }
       .btn {
-        width: 17rem;
+        width: 16rem;
         height: 2.3rem;
         font-size: 1rem;
         border: 0px;
@@ -66,12 +64,11 @@
       .top_div h1 {
         margin-left: 0.6rem;
       }
-      .swich {
-        margin-left: 9.38rem;
-      }
+
       .swich .box {
-        width: 80px;
-        height: 20px;
+        position: relative;
+        width: 145px;
+        height: 25px;
         background: #313136;
         border-radius: 6px;
         transition: all 0.2s ease;
@@ -80,13 +77,31 @@
         align-items: center;
         justify-content: left;
       }
+      .swich .box::before,
+      .swich .box::after {
+        position: absolute;
+        width: 50%;
+        height: calc(100% - 2px);
+        line-height: calc(25px - 2px);
+        font-size: 12px;
+        text-align: center;
+        z-index: 999;
+      }
+      .swich .box::before {
+        left: 0;
+        content: "密码";
+      }
+      .swich .box::after {
+        right: 0;
+        content: "SSH密钥";
+      }
       .swich input {
         display: none;
       }
       .swich .box span {
         display: inline-block;
-        width: 40px;
-        height: 17px;
+        width: 50%;
+        height: calc(100% - 2px);
         border-radius: 5px;
         background: #69696f;
         transform: translateX(1.5px);
@@ -96,16 +111,21 @@
         transition: all 0.2s ease;
       }
       .swich-on .box span {
-        transform: translateX(38px);
+        transform: translateX(71px);
         transition: all 0.2s ease;
       }
-
       .div_auth {
         display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .secret_auth {
+        margin-top: 0.9rem;
+        height: 7rem;
       }
     </style>
   </head>
-
   <body>
     <div class="top_div">
       <svg
@@ -136,22 +156,25 @@
     <ul>
       <li>
         <p>Host</p>
-        <input type="text" placeholder="Your server host address." />
+        <input
+          type="text"
+          placeholder="Your server host address."
+          class="li-input-text"
+        />
       </li>
       <li>
         <p>Port</p>
-        <input type="text" placeholder="e.g.:22" />
+        <input type="text" placeholder="e.g.:22" class="li-input-text" />
       </li>
       <li>
         <div class="div_auth">
           <p>Auth</p>
           <div class="swich">
             <input type="checkbox" value="" name="" />
-            <div class="box">
-              <span></span>
-            </div>
+            <div class="box"><span></span></div>
           </div>
         </div>
+        <textarea class="li-input-text secret_auth"></textarea>
       </li>
     </ul>
     <button class="btn">OK</button>

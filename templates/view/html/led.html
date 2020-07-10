@@ -1,74 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <title>Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>跑马灯</title>
     <style type="text/css">
-      body,
-      #app {
+      body {
         margin: 0;
         padding: 0;
-        font-family: Helvetica;
-        background: #f0efef !important;
-        width: 100%;
-        overflow-x: hidden;
+        background-color: #ccc;
       }
-      a {
-        text-decoration: none;
-      }
-      .pro_quota_tip {
-        background: #fff;
-        font-size: 14px;
-        overflow: hidden;
-        width: 200px;
-        height: 49px;
+      div {
         margin: 0 auto;
-        margin-top: 10%;
-      }
-      .pro_quota_tip .tip_box {
-        position: relative;
-      }
-      .pro_quota_tip .tip_box a {
-        color: red;
-        display: block;
-        width: 100%;
-        padding: 15px 5px;
-        white-space: nowrap;
+        width: 500px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border: 1px solid #000;
+        border-radius: 10px;
         overflow: hidden;
-        text-overflow: ellipsis;
+      }
+      p {
+        margin: 0;
+        background: -webkit-linear-gradient(
+          left,
+          #ffffff,
+          #ff0000 6.25%,
+          #ff7d00 12.5%,
+          #ffff00 18.75%,
+          #00ff00 25%,
+          #00ffff 31.25%,
+          #0000ff 37.5%,
+          #ff00ff 43.75%,
+          #ffff00 50%,
+          #ff0000 56.25%,
+          #ff7d00 62.5%,
+          #ffff00 68.75%,
+          #00ff00 75%,
+          #00ffff 81.25%,
+          #0000ff 87.5%,
+          #ff00ff 93.75%,
+          #ffff00 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 100%;
+        animation: masked-animation 2s infinite linear;
+      }
+      @keyframes masked-animation {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: -100%, 0;
+        }
       }
     </style>
-    <script
-      type="text/javascript"
-      src="/static/js/jquery/3.5.1/slim_minified.js"
-    ></script>
   </head>
   <body>
-    <section class="pro_quota_tip">
-      <div class="tip_box">
-        <a href="javascript:;">aaaaaaaaa</a>
-        <a href="javascript:;">bbbbbbbbbbbbbb</a>
-        <a href="javascript:;">ccccccccccc</a>
-        <a href="javascript:;">ddddddddddddddd</a>
-        <a href="javascript:;">aaaaaaaaaaaaaa</a>
-      </div>
-    </section>
+    <div>
+      <p>
+        天行健，君子以自强不息；地势坤，君子以厚德载物！
+      </p>
+    </div>
   </body>
-
-  <script>
-    $(function () {
-      var tip_box_a_h = document.querySelectorAll(".tip_box a")[0].offsetHeight;
-      var i = 0;
-      setInterval(() => {
-        let startScroll = setInterval(() => {
-          i++;
-          document.querySelector(".tip_box").style.bottom =
-            (tip_box_a_h / 10) * i + "px";
-          if (i % 10 == 0) clearInterval(startScroll);
-        }, 50);
-        if (i > 10 * (document.querySelectorAll(".tip_box a").length - 2))
-          i = 0;
-      }, 1000);
-    });
-  </script>
 </html>
