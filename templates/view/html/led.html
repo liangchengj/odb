@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Player</title>
+    <style type="text/css">
+      body,
+      #app {
+        margin: 0;
+        padding: 0;
+        font-family: Helvetica;
+        background: #f0efef !important;
+        width: 100%;
+        overflow-x: hidden;
+      }
+      a {
+        text-decoration: none;
+      }
+      .pro_quota_tip {
+        background: #fff;
+        font-size: 14px;
+        overflow: hidden;
+        width: 200px;
+        height: 49px;
+        margin: 0 auto;
+        margin-top: 10%;
+      }
+      .pro_quota_tip .tip_box {
+        position: relative;
+      }
+      .pro_quota_tip .tip_box a {
+        color: red;
+        display: block;
+        width: 100%;
+        padding: 15px 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+    <script
+      type="text/javascript"
+      src="/static/js/jquery/3.5.1/slim_minified.js"
+    ></script>
+  </head>
+  <body>
+    <section class="pro_quota_tip">
+      <div class="tip_box">
+        <a href="javascript:;">aaaaaaaaa</a>
+        <a href="javascript:;">bbbbbbbbbbbbbb</a>
+        <a href="javascript:;">ccccccccccc</a>
+        <a href="javascript:;">ddddddddddddddd</a>
+        <a href="javascript:;">aaaaaaaaaaaaaa</a>
+      </div>
+    </section>
+  </body>
+
+  <script>
+    $(function () {
+      var tip_box_a_h = document.querySelectorAll(".tip_box a")[0].offsetHeight;
+      var i = 0;
+      setInterval(() => {
+        let startScroll = setInterval(() => {
+          i++;
+          document.querySelector(".tip_box").style.bottom =
+            (tip_box_a_h / 10) * i + "px";
+          if (i % 10 == 0) clearInterval(startScroll);
+        }, 50);
+        if (i > 10 * (document.querySelectorAll(".tip_box a").length - 2))
+          i = 0;
+      }, 1000);
+    });
+  </script>
+</html>
