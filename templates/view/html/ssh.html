@@ -36,6 +36,7 @@
         border-radius: 0.5rem;
         margin-top: 0.6rem;
         padding: 0.3rem 0.6rem;
+        width: 16rem;
       }
 
       body ul li,
@@ -51,6 +52,7 @@
         background: #1c1c1e;
         text-align: center;
         margin-top: 8rem;
+        margin-bottom: 2rem;
       }
       .btn:active {
         background: transparent;
@@ -63,6 +65,43 @@
       }
       .top_div h1 {
         margin-left: 0.6rem;
+      }
+      .swich {
+        margin-left: 9.38rem;
+      }
+      .swich .box {
+        width: 80px;
+        height: 20px;
+        background: #313136;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        padding: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+      }
+      .swich input {
+        display: none;
+      }
+      .swich .box span {
+        display: inline-block;
+        width: 40px;
+        height: 17px;
+        border-radius: 5px;
+        background: #69696f;
+        transform: translateX(1.5px);
+        transition: all 0.2s ease;
+      }
+      .swich-on .box {
+        transition: all 0.2s ease;
+      }
+      .swich-on .box span {
+        transform: translateX(38px);
+        transition: all 0.2s ease;
+      }
+
+      .div_auth {
+        display: flex;
       }
     </style>
   </head>
@@ -104,10 +143,31 @@
         <input type="text" placeholder="e.g.:22" />
       </li>
       <li>
-        <p>Password</p>
-        <input type="text" placeholder="e.g.:22" />
+        <div class="div_auth">
+          <p>Auth</p>
+          <div class="swich">
+            <input type="checkbox" value="" name="" />
+            <div class="box">
+              <span></span>
+            </div>
+          </div>
+        </div>
       </li>
     </ul>
     <button class="btn">OK</button>
+    <script type="application/javascript">
+      (function (select) {
+        var box = document.querySelector(select);
+        var checkbox = box.querySelector("input");
+        box.onclick = function () {
+          this.classList.toggle("swich-on");
+          if (checkbox.checked) {
+            checkbox.checked = "true";
+          } else {
+            checkbox.checked = "false";
+          }
+        };
+      })(".swich");
+    </script>
   </body>
 </html>
