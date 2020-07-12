@@ -6,7 +6,6 @@ date=$(date)
 
 
 sudo cp /etc/apt/sources.list "/etc/apt/sources.list $(date)"
-sudo rm -rf /etc/apt/sources.list
 sudo echo "deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
 deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
 
