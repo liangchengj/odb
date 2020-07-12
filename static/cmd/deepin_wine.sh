@@ -3,6 +3,9 @@
 # Created at 2020/7/12 19:16
 # @author Liangcheng Juves
 
+
+sudo dpkg --add-architecture i386
+
 install_dir=/usr/local/deepin_wine_tmp
 
 if [ -d $install_dir ];then
@@ -27,8 +30,8 @@ install_wine_env_deb=(
 	non-free/u/udis86/udis86_1.72-2_i386.deb
 	non-free/d/deepin-wine/deepin-fonts-wine_2.18-22~rc0_all.deb
 	non-free/d/deepin-wine/deepin-libwine_2.18-22~rc0_i386.deb
-	main/libj/libjpeg-turbo/libjpeg62-turbo_1.5.2-2%2Bb1_amd64.deb
-	main/libj/libjpeg-turbo/libjpeg62-turbo_1.5.2-2%2Bb1_i386.deb
+	main/libj/libjpeg-turbo/libjpeg-turbo-progs_1.5.1-2_amd64.deb
+	main/libj/libjpeg-turbo/libjpeg-turbo-progs_1.5.1-2_i386.deb
 	non-free/d/deepin-wine/deepin-libwine-dbg_2.18-22~rc0_i386.deb
 	non-free/d/deepin-wine/deepin-libwine-dev_2.18-22~rc0_i386.deb
 	non-free/d/deepin-wine/deepin-wine-binfmt_2.18-22~rc0_all.deb
@@ -41,15 +44,16 @@ do
 	sudo wget -P $install_dir $url_begin/$ele
 done
 
-
-sudo dpkg --add-architecture i386
-
-
+sudo apt -y upgrade
 sudo apt -y update
+sudo apt-get -y upgrade
+sudo apt-get -y update
 
 sudo dpkg -i $install_dir/*.deb
 
-sudo apt-get -y install -f
+sudo apt-get install -f
+sudo apt --fix-broken install
+sudo apt-get install --fix-missing
 
 qq_deb_name=deepin.com.qq.im_9.1.8deepin0_i386.deb
 sudo wget -P $install_dir $url_begin/non-free/d/deepin.com.qq.im/$qq_deb_name
@@ -62,8 +66,9 @@ case $answer in
 	[Yy])
 		echo "Installing QQ..."
 		sudo dpkg -i $install_dir/$qq_deb_name
-		sudo apt-get -y install -f
-		sudo apt-get -y --fix-missing
+		sudo apt-get install -f
+		sudo apt --fix-broken install
+		sudo apt-get install --fix-missing
 		;;
 esac
 
@@ -73,10 +78,13 @@ case $answer in
 	[Yy])
 		echo "Installing WeChat..."
 		sudo dpkg -i $install_dir/$wx_deb_name
-		sudo apt-get -y install -f
-		sudo apt-get -y --fix-missing
+		sudo apt-get install -f
+		sudo apt --fix-broken install
+		sudo apt-get install --fix-missing
 		;;
 esac
 
 
 echo "Installed all is OK!"
+
+
