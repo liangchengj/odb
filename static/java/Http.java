@@ -1,5 +1,6 @@
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Base64;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Liangcheng Juves
  */
 public class Http {
+
 
     private static AtomicInteger atomicInteger = new AtomicInteger(1);
 
@@ -25,7 +27,7 @@ public class Http {
     );
 
     public static void main(String[] args) {
-        Integer integer=Integer.valueOf(1);
+        Integer integer = Integer.valueOf(1);
         integer.intValue();
         threadPoolExecutor.execute(() -> {
             try {
@@ -39,6 +41,8 @@ public class Http {
                         new String(bytes, 0, len)
                 ))
                     ;
+
+                System.out.println(Base64.getEncoder().encodeToString("A".getBytes()));
 
             } catch (Throwable t) {
                 t.printStackTrace();
