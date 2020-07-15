@@ -65,32 +65,8 @@ public final class Base64 {
 
 
     public static void main(String[] args) throws Exception {
-
-        System.out.println("https://www.baidu.com/s?ie=utf-8&f=3&rsv_bp=1&tn=baidu&wd=vscode%E5%BF%AB%E9%80%9F%E5%A4%8D%E5%88%B6%E5%BD%93%E5%89%8D%E4%BB%A3%E7%A0%81%E5%88%B0%E4%B8%8B%E4%B8%80%E8%A1%8C&oq=masm%2526lt%253B2%25E8%25BF%2590%25E8%25A1%258C%25E6%25B1%2587%25E7%25BC%2596&rsv_pq=bc5c89dc00058fcb&rsv_t=052cR8KOSpr0009M%2Bk9d0SgMTNWVOXCCdYDGqYkWaUJgy8v5I97gP%2BkYtr4&rqlang=cn&rsv_enter=1&rsv_dl=ts_1&rsv_btype=t&inputT=24907&rsv_sug3=640&rsv_sug1=442&rsv_sug7=100&rsv_sug2=1&prefixsug=VS%2520%2526lt%253Bodekuaisu&rsp=1&rsv_sug4=24907".equals("https://www.baidu.com/s?ie=utf-8&f=3&" +
-                "rsv_bp=1&tn=baidu&wd=vscode%E5%BF%" +
-                "AB%E9%80%9F%E5%A4%8D%E5%88%B6%E5%BD%9" +
-                "3%E5%89%8D%E4%BB%A3%E7%A0%81%E5%88%B0%E4%" +
-                "B8%8B%E4%B8%80%E8%A1%8C&oq=masm%2526lt%253B2%" +
-                "25E8%25BF%2590%25E8%25A1%258C%25E6%25B1%2587%25E7%" +
-                "25BC%2596&rsv_pq=bc5c89dc00058fcb&rsv_t=052cR8KOSp" +
-                "r0009M%2Bk9d0SgMTNWVOXCCdYDGqYkWaUJgy8v5I97gP%2BkYtr4" +
-                "&rqlang=cn&rsv_enter=1&rsv_dl=ts_1&rsv_btype=t&inputT=24" +
-                "907&rsv_sug3=640&rsv_sug1=442&rsv_sug7=100&rsv_sug2=1&pre" +
-                "fixsug=VS%2520%2526lt%253Bodekuaisu&rsp=1&rsv_sug4=24907"));
-
-        System.out.println(
-                new String(encode(
-                        ("https://www.baidu.com/s?ie=utf-8&f=3&" +
-                                "rsv_bp=1&tn=baidu&wd=vscode%E5%BF%" +
-                                "AB%E9%80%9F%E5%A4%8D%E5%88%B6%E5%BD%9" +
-                                "3%E5%89%8D%E4%BB%A3%E7%A0%81%E5%88%B0%E4%" +
-                                "B8%8B%E4%B8%80%E8%A1%8C&oq=masm%2526lt%253B2%" +
-                                "25E8%25BF%2590%25E8%25A1%258C%25E6%25B1%2587%25E7%" +
-                                "25BC%2596&rsv_pq=bc5c89dc00058fcb&rsv_t=052cR8KOSp" +
-                                "r0009M%2Bk9d0SgMTNWVOXCCdYDGqYkWaUJgy8v5I97gP%2BkYtr4" +
-                                "&rqlang=cn&rsv_enter=1&rsv_dl=ts_1&rsv_btype=t&inputT=24" +
-                                "907&rsv_sug3=640&rsv_sug1=442&rsv_sug7=100&rsv_sug2=1&pre" +
-                                "fixsug=VS%2520%2526lt%253Bodekuaisu&rsp=1&rsv_sug4=24907").getBytes(), false)));
+        System.out.println(encode("hello,world\n".getBytes(), false));
+        System.out.println(encode("https://www.xxx.com?a=0&b=1&c=2&d=++".getBytes(), true));
     }
 
 }
