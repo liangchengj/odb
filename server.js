@@ -1330,3 +1330,4 @@ function MIME_MAPPING() {
   );
   return MIME_MAPPING;
 }
+

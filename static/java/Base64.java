@@ -1,5 +1,3 @@
-import java.util.regex.Pattern;
-
 /**
  * Created at 2020/7/14 23:56.
  *
@@ -7,7 +5,7 @@ import java.util.regex.Pattern;
  */
 public final class Base64 {
 
-    private static final char[] toBase64 = {
+    private static final char[] alphabet = {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -19,40 +17,36 @@ public final class Base64 {
     }
 
 
-    public static final byte[] encode(byte[] bytes) {
-        int bytesLen = bytes.length;
-        int yu = bytesLen % 3;
+    public static final byte[] encode(byte[] src) {
+        int srcLen = src.length;
+        int rder = srcLen % 3;
+        byte[] cpy = new byte[srcLen + (3 - (rder != 0 ? rder : 3))];
+        System.arraycopy(src, 0, cpy, 0, srcLen);
+        byte[] dst = new byte[cpy.length / 3 * 4];
 
-        if (yu != 0) {
-            byte[] cpy = new byte[bytesLen + (3 - yu)];
-            System.arraycopy(bytes, 0, cpy, 0, bytesLen);
-            bytes = cpy;
+        for (int cpyi = 0, dsti = 0; dsti < dst.length; cpyi += 3, dsti += 4) {
+            int cpyi1 = cpyi + 1,
+                    cpyi2 = cpyi + 2,
+                    // Alphabet unsigned indexes.
+                    albeti0 = cpy[cpyi] & 0xff,
+                    albeti1 = cpy[cpyi1] & 0xff,
+                    albeti2 = cpy[cpyi2] & 0xff;
+
+            dst[dsti] = (byte) alphabet[albeti0 >> 2];
+            dst[dsti + 1] = (byte) alphabet[(albeti0 & 0x3) << 4 | albeti1 >> 4];
+            dst[dsti + 2] = cpy[cpyi1] != '\0' && cpyi1 != srcLen
+                    ? (byte) alphabet[(albeti1 & 0xf) << 2 | albeti2 >> 6]
+                    : (byte) '=';
+            dst[dsti + 3] = cpy[cpyi2] != '\0' && cpyi2 != srcLen + 1
+                    ? (byte) alphabet[albeti2 & 0x3f]
+                    : (byte) '=';
         }
-        bytesLen = bytes.length;
-        byte[] dst = new byte[bytesLen / 3 * 4];
-
-        int i, j;
-
-        for (i = 0, j = 0; i < dst.length; j += 3, i += 4) {
-            dst[i] = (byte) toBase64[bytes[j] >> 2];
-            dst[i + 1] = (byte) (toBase64[(bytes[j] & 0x3) << 4 | bytes[j + 1] >> 4]);
-            if (bytes[j + 1] != '\0') {
-                dst[i + 2] = (byte) (toBase64[(bytes[j + 1] & 0xf) << 2 | bytes[j + 2] >> 6]);
-            } else {
-                dst[i + 2] = '=';
-            }
-            if (bytes[j + 2] != '\0') {
-                dst[i + 3] = (byte) (toBase64[bytes[j + 2] & 0x3f]);
-            } else {
-                dst[i + 3] = '=';
-            }
-        }
-
         return dst;
     }
 
+
     public static void main(String[] args) throws Exception {
-        System.out.println(new String(encode("hello,world\n".getBytes())));
+        System.out.println(new String(encode("我们都一样".getBytes())));
     }
 
 }
