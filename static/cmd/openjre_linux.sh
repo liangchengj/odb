@@ -14,8 +14,8 @@ if [ -f "/usr/local/$xz_filename" ];then
 	sudo rm -rf /usr/local/$xz_filename
 	# Env 
 	sudo echo "export JAVA_HOME=\"$jdk_install_path\"
-export CLASSPATH=.:\$JAVA_HOME/lib
-export PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile
+export CLASSPATH=.:\$JAVA_HOMElib
+export PATH=\$JAVA_HOMEbin:\$PATH" >> /etc/profile
 
 	source /etc/profile
 	
