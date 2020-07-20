@@ -5,10 +5,10 @@
  */
 
 (() => {
-  loadVue();
-  titleOf(`Liangcheng Juves' Support Contens`);
-  useDefFont();
-  jsof("/static/js/index.js");
+  initialize(`Liangcheng Juves' Support Contens`, [
+    "/static/css/index.css",
+    "/static/css/animation.css",
+  ]);
 })();
 
 function loadPdf(url) {

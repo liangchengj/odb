@@ -113,51 +113,16 @@ const DO_COMPRESS_JS = true;
 let rmComment = (code) => code; // .replace(/\/\*(.|\r\n|\n)*?\*\/|(?<!:.*|<[\s\S]*=")\/\/.*/gi, (...args) => //   args[0] //     .replace(/(.*)(?=<\/.*script>)/, "") //     .replace(/(.*)(?=<\/.*style>)/, "") // );
 // .replace(/<!--([\s\S|\r]*?)-->/gi, "")
 // .replace(/\/\*(.|\r\n|\n)*?\*\//gi, "")
-/*  .replace(/^\s\S*\n/gim, "") */ let compressHtml = (html) =>
-  rmComment(html)
-    .replace(/\r+|\n/gi, "")
+/*  .replace(/^\s\S*\n/gim, "") */ let compressHtml = (html) => rmComment(html);
+/*  .replace(/\r+|\n/gi, "")
     .replace(/[ ]+</gi, "<")
     .replace(/>[ ]+/gi, ">")
-    .replace(/(?<=.*)[ ]+(?=\/>)/gi, "");
-
-let compressJs = (js) =>
-  rmComment(js)
-    .replace(/\blet\b(?=\=|\bin\b|\bof\b)*/gi, "var")
-    // (\([^(]*\))\s*=>(?!.\{)([^;])*
-    .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1");
-// .replace(
-//   /(?<!(\/\/[\s\S])|(\*[\s\S](\*\*\/)*))`([\s\S]*)`(?!\*\/*)/gi /* *`*`* */,
-//   (...args) => {
-//     // let test =
-//     //   '<span class="book_content"><img src="/static/img/book_icon.svg"/>' +
-//     //   '<a href="javascript:void(0);" onclick="loadPdf(\'" + url+ "\');">《 " + bookName.substring(' +
-//     //   "0," +
-//     //   'bookName.lastIndexOf(".")' +
-//     //   ')+ " 》</a>' +
-//     //   "</span>";
-
-//     let tmp = args[0];
-//     if (
-//       tmp.startsWith(`//`) == -1 ||
-//       tmp.startsWith("*") ||
-//       tmp.endsWith("*/")
-//     ) {
-//       return tmp;
-//     } else {
-//       return `"${tmp
-//         // Handle \` escape characters in template strings
-//         .replace(/\`/gi, "")
-//         // Solve the HTML tags escape character " -> \"
-//         .replace(/"/gi, '\\"')
-//         // Processing methods in all escape character \" -> "
-//         .replace(/((?<=\()\\")|\\"(?=\))/gi, `"`)
-//         // To solve the problem of the single quotes to invoke the method
-//         .replace(/"'(?=\))/gi, `'"`)
-//         // String format template
-//         .replace(/ *[\r\n]+ */gi, '"\n\t+ "')
-//         // Methods a newline in the body
-//         .replace(/(?<=\()(.*)(?=\))/gis, (...args) =>
-//           args[1].replace(/"\n\t\+ "/gi, "")
+    .replace(/(?<=.*)[ ]+(?=\/>)/gi, "") */ let compressJs = (
+  js
+) => rmComment(js); // .replace( //   /(?<!(\/\/[\s\S])|(\*[\s\S](\*\*\/)*))`([\s\S]*)`(?!\*\/*)/gi /* *`*`* */, //   (...args) => { //     // let test = //     //   '<span class="book_content"><img src="/static/img/book_icon.svg"/>' + //     //   '<a href="javascript:void(0);" onclick="loadPdf(\'" + url+ "\');">《 " + bookName.substring(' + //     //   "0," + //     //   'bookName.lastIndexOf(".")' + //     //   ')+ " 》</a>' + //     //   "</span>"; //     let tmp = args[0]; //     if ( //       tmp.startsWith(`//`) == -1 || //       tmp.startsWith("*") || //       tmp.endsWith("*/") //     ) { //       return tmp; //     } else { //       return `"${tmp //         // Handle \` escape characters in template strings //         .replace(/\`/gi, "") //         // Solve the HTML tags escape character " -> \" //         .replace(/"/gi, '\\"') //         // Processing methods in all escape character \" -> " //         .replace(/((?<=\()\\")|\\"(?=\))/gi, `"`) //         // To solve the problem of the single quotes to invoke the method //         .replace(/"'(?=\))/gi, `'"`) //         // String format template //         .replace(/ *[\r\n]+ */gi, '"\n\t+ "') //         // Methods a newline in the body //         .replace(/(?<=\()(.*)(?=\))/gis, (...args) =>
+// .replace(/\blet\b(?=\=|\bin\b|\bof\b)*/gi, "var")
+// (\([^(]*\))\s*=>(?!.\{)([^;])*
+/* .replace(/(\([^()]*\))\s*=>(?=\s*\{(.|\n)*\})/gis, "function $1") */ //           args[1].replace(/"\n\t\+ "/gi, "")
 //         )
 //         // Deal with EL expression
 //         .replace(/\$\{([^\}]+)\}/gi, `" + $1 + "`)}"`; // a
@@ -1330,4 +1295,3 @@ function MIME_MAPPING() {
   );
   return MIME_MAPPING;
 }
-

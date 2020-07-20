@@ -18,6 +18,9 @@ public final class Base64 {
     private Base64() {
     }
 
+//    public static void encodeIs(InputStream is, boolean isURL, OutputStream... os) {
+//        char[] cpybet = Arrays.copyOf(alphabet, alphabet.length);
+//    }
 
     public static byte[] encode(byte[] src, boolean isURL) {
         char[] cpybet = Arrays.copyOf(alphabet, alphabet.length);
@@ -67,9 +70,6 @@ public final class Base64 {
     public static void main(String[] args) throws Exception {
         System.out.println(new String(encode("hello,world\n".getBytes(), false)));
         System.out.println(new String(encode("https://www.xxx.com?a=0&b=1&c=2&d=++".getBytes(), true)));
-        System.out.println(new String(("佪ܜᖙ乏೼ᶤϾ᭛ӊЁᓎゟ䖭Ͼ⑤⿟ᑣˈᑊҹ“.cā԰Ў᭛ӊⱘᠽሩৡˈ՟བhello.cˈ✊ৢݡ䗮䖛ϟ߫" +
-                "ੑҸ䖯㸠㓪䆥˖cc hello.cབᵰ⑤⿟ᑣ≵᳝ҔМ䫭䇃˄՟བⓣᥝᄫヺ៪ᣐ䫭ᄫヺ˅ˈ㓪䆥䖛⿟ᇚ乎߽䖯㸠ˈᑊ⫳៤ϔϾৃᠻ㸠᭛ӊa.outDŽ✊ৢ" +
-                "ˈ៥Ӏ䕧ܹ˖a.outेৃ䖤㸠a.outᙃ˖ֵ߫ϟߎˈᠧॄhello, world೼݊ᅗ᪡԰㋏㒳Ёˈ㓪䆥ǃࡴ䕑ǃ䖤㸠ㄝ㾘߭Ӯ᳝᠔ϡৠDŽ").getBytes("GBK")));
     }
 
 }
