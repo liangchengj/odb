@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cn">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,10 +9,9 @@
         margin: 0;
         padding: 0;
       }
-
       .wrapper {
         width: 90%;
-        margin: 60px auto 0;
+        margin: 75px auto 0;
       }
       .left {
         float: left;
@@ -34,17 +33,18 @@
         height: 100px;
         margin-top: 30px;
       }
-
       textarea {
         padding: 5px;
         font-size: 1.3rem;
+        border: 3px gray solid;
+        border-radius: 5px;
       }
     </style>
 
-    <script src="//cdn.jsdelivr.net/combine/npm/jquery@2.2.4/dist/jquery.min.js,gh/lrsjng/jquery-qrcode@0.14.0/dist/jquery-qrcode.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/lrsjng/jquery-qrcode@0.14.0/dist/jquery-qrcode.min.js"></script>
-    <title>Vmess 互转</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-qrcode2@1.0.0/dist/jquery-qrcode.min.js"></script>
+
+    <title>Vmess 链接互转</title>
   </head>
   <body>
     <div class="wrapper">
@@ -62,7 +62,7 @@
     </div>
     <script type="application/javascript">
       function decodeVmess(url) {
-        var vmessUrl = url;
+        let vmessUrl = url;
         vmessUrl = vmessUrl.replace("vmess://", "");
         vmessUrl = atob(vmessUrl);
         return vmessUrl;
@@ -73,16 +73,16 @@
       }
 
       function quantumultToV2ray(url) {
-        var vmessUrl = url;
+        let vmessUrl = url;
         vmessUrl = decodeVmess(vmessUrl);
-        var propsArr = vmessUrl.split(/,[ ]*/);
-        var temp = `{
+        let propsArr = vmessUrl.split(/,[ ]*/);
+        let temp = `{
             "v": "2",
             "ps": "${propsArr[0].replace(/[ ]*=[ ]*vmess/, "")}",
             "add": "${propsArr[1]}",
             "port": "${propsArr[2]}",
             "id": "${propsArr[4].replace(/^\"(.*)\"$/gi, "$1")}",
-            "aid": "233",
+            "aid": "0",
             "net": "${propsArr[8].replace(/obfs[ ]*=[ ]*/, "")}",
             "type": "${propsArr[3]}",
             "host": "${propsArr[6].replace(/tls-host[ ]*=[ ]*/, "")}",
@@ -98,10 +98,10 @@
       }
 
       function v2rayToQuantumult(url) {
-        var vmessUrl = url;
+        let vmessUrl = url;
         vmessUrl = decodeVmess(vmessUrl);
-        var config = JSON.parse(vmessUrl);
-        var qVmess = `${config.ps} = vmess,${config.add},${config.port},${
+        let config = JSON.parse(vmessUrl);
+        let qVmess = `${config.ps} = vmess,${config.add},${config.port},${
           config.type
         },"${config.id}",over-tls=${config.tls === "tls"},tls-host=${
           config.host
@@ -113,36 +113,42 @@
       }
 
       function genQrCode(vmessUrl, label) {
-        var options = {
+        let options = {
           render: "canvas",
-          size: 540,
-          ecLevel: "Q",
-          fill: "black",
-          background: null,
+          ecLevel: "H",
+          minVersion: 6,
+          fill: "#333333",
+          background: "white",
           text: vmessUrl,
+          size: 540,
+          radius: 0.01 * 50,
+          quiet: 1,
+          mode: 2,
+          mSize: 0.01 * 11,
+          mPosX: 0.01 * 50,
+          mPosY: 0.01 * 50,
           label: label,
           fontname: "sans",
-          fontcolor: "black",
-          quiet: 0,
-          mode: 2,
+          fontcolor: "#ff9818",
+          image: null,
         };
         $("#qrcode").empty().qrcode(options);
       }
 
       document.getElementById("input").onchange = function () {
-        var output = document.getElementById("output");
+        let output = document.getElementById("output");
 
         if (this.value.startsWith("vmess://")) {
-          var result;
+          let result;
           $(".right").css({ display: "block" });
           try {
             result = v2rayToQuantumult(this.value);
-            output.innerText = result;
-            genQrCode(result, "Quantumult Vmess");
+            output.value = result;
+            genQrCode(result, " Quantumult ");
           } catch (error) {
             result = quantumultToV2ray(this.value);
-            output.innerText = result;
-            genQrCode(result, "Vmess");
+            output.value = result;
+            genQrCode(result, " v2ray ");
           }
         } else if (this.value !== "") {
           alert("请输入正确的Vmess链接");
@@ -151,4 +157,3 @@
     </script>
   </body>
 </html>
-
