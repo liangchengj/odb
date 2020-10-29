@@ -76,25 +76,21 @@
         let vmessUrl = url;
         vmessUrl = decodeVmess(vmessUrl);
         let propsArr = vmessUrl.split(/,[ ]*/);
-        let temp = `{
-            "v": "2",
-            "ps": "${propsArr[0].replace(/[ ]*=[ ]*vmess/, "")}",
-            "add": "${propsArr[1]}",
-            "port": "${propsArr[2]}",
-            "id": "${propsArr[4].replace(/^\"(.*)\"$/gi, "$1")}",
-            "aid": "0",
-            "net": "${propsArr[8].replace(/obfs[ ]*=[ ]*/, "")}",
-            "type": "${propsArr[3]}",
-            "host": "${propsArr[6].replace(/tls-host[ ]*=[ ]*/, "")}",
-            "path": "${propsArr[9].replace(
-              /^obfs-path[ ]*=[ ]*\"(.*)\"$/gi,
-              "$1"
-            )}",
-            "tls": "${
-              propsArr[5].replace(/over-tls[ ]*=[ ]*/, "") ? "tls" : ""
-            }"
-        }`;
-        return encodeVmess(JSON.stringify(JSON.parse(temp)));
+        let config = {
+          v: 2,
+          ps: propsArr[0].replace(/[ ]*=[ ]*vmess$/, ""),
+          add: propsArr[1],
+          port: propsArr[2],
+          id: propsArr[4].replace(/^\"(.*)\"$/gi, "$1"),
+          aid: 0,
+          net: propsArr[8].replace(/^obfs[ ]*=[ ]*/, ""),
+          type: propsArr[3],
+          host: propsArr[6].replace(/^tls-host[ ]*=[ ]*/, ""),
+          path: propsArr[9].replace(/^obfs-path[ ]*=[ ]*\"(.*)\"$/gi, "$1"),
+          tls: propsArr[5].replace(/^over-tls[ ]*=[ ]*/, "") ? "tls" : "",
+        };
+
+        return encodeVmess(JSON.stringify(config));
       }
 
       function v2rayToQuantumult(url) {
@@ -105,9 +101,9 @@
           config.type
         },"${config.id}",over-tls=${config.tls === "tls"},tls-host=${
           config.host
-        },certificate=1,obfs=${config.net},obfs-path="${
-          config.path
-        }",obfs-header="Host:${config.host}"`;
+        },certificate=${config.tls === "tls" ? 1 : 0},obfs=${
+          config.net
+        },obfs-path="${config.path}",obfs-header="Host:${config.host}"`;
 
         return encodeVmess(qVmess);
       }
