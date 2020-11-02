@@ -72,7 +72,7 @@
         return `vmess://${btoa(url)}`;
       }
 
-      function quantumultToV2ray(url) {
+      function quantumultToV2rayN(url) {
         let vmessUrl = url;
         vmessUrl = decodeVmess(vmessUrl);
         let propsArr = vmessUrl.split(/,[ ]*/);
@@ -107,7 +107,7 @@
         return encodeVmess(JSON.stringify(config));
       }
 
-      function v2rayToQuantumult(url) {
+      function v2rayNToQuantumult(url) {
         let vmessUrl = url;
         vmessUrl = decodeVmess(vmessUrl);
         let config = JSON.parse(vmessUrl);
@@ -158,11 +158,11 @@
           let result;
           $(".right").css({ display: "block" });
           try {
-            result = v2rayToQuantumult(inputUrl);
+            result = v2rayNToQuantumult(inputUrl);
             output.value = result;
             genResultAndQrCode(result, " Quantumult ");
           } catch (error) {
-            result = quantumultToV2ray(inputUrl);
+            result = quantumultToV2rayN(inputUrl);
             output.value = result;
             genResultAndQrCode(result, " v2rayN ");
           }
