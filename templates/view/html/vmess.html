@@ -121,9 +121,7 @@
           ? `,obfs-path="${config.path ? config.path : ""}"`
           : "";
         qVmess += config.net
-          ? `,obfs-header="${
-              config.tls === "tls" ? "Host:" + config.host : ""
-            }"`
+          ? `,obfs-header="${config.host ? "Host:" + config.host : ""}"`
           : "";
 
         return encodeVmess(qVmess);
