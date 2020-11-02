@@ -61,18 +61,16 @@
       </div>
     </div>
     <script type="application/javascript">
-      function decodeVmess(url) {
+      let decodeVmess = (url) => {
         let vmessUrl = url;
         vmessUrl = vmessUrl.replace("vmess://", "");
         vmessUrl = atob(vmessUrl);
         return vmessUrl;
-      }
+      };
 
-      function encodeVmess(url) {
-        return `vmess://${btoa(url)}`;
-      }
+      let encodeVmess = (url) => `vmess://${btoa(url)}`;
 
-      function quantumultToV2rayN(url) {
+      let quantumultToV2rayN = (url) => {
         let vmessUrl = url;
         vmessUrl = decodeVmess(vmessUrl);
         let propsArr = vmessUrl.split(/,[ ]*/);
@@ -105,9 +103,9 @@
         };
 
         return encodeVmess(JSON.stringify(config));
-      }
+      };
 
-      function v2rayNToQuantumult(url) {
+      let v2rayNToQuantumult = (url) => {
         let vmessUrl = url;
         vmessUrl = decodeVmess(vmessUrl);
         let config = JSON.parse(vmessUrl);
@@ -125,9 +123,9 @@
           : "";
 
         return encodeVmess(qVmess);
-      }
+      };
 
-      function genResultAndQrCode(vmessUrl, label) {
+      let genResultAndQrCode = (vmessUrl, label) => {
         let options = {
           render: "canvas",
           ecLevel: "H",
@@ -148,26 +146,47 @@
           image: null,
         };
         $("#qrcode").empty().qrcode(options);
-      }
+      };
 
-      document.getElementById("input").onchange = function () {
+      let clearHash = () =>
+        history.replaceState(
+          null,
+          document.title,
+          location.href.replace(/^(.*)#.*$/, "$1")
+        );
+
+      window.onload = () => {
+        if (location.hash) {
+          let input = document.getElementById("input");
+          input.value = location.hash.substr(1);
+          input.onchange();
+        } else {
+          clearHash();
+        }
+      };
+
+      document.getElementById("input").onchange = (e) => {
         let output = document.getElementById("output");
-        let inputUrl = this.value;
+        let inputUrl = e.target.value;
 
         if (inputUrl.startsWith("vmess://")) {
           let result;
+          location.hash = inputUrl;
           $(".right").css({ display: "block" });
           try {
             result = v2rayNToQuantumult(inputUrl);
             output.value = result;
             genResultAndQrCode(result, " Quantumult ");
-          } catch (error) {
+          } catch (err) {
             result = quantumultToV2rayN(inputUrl);
             output.value = result;
             genResultAndQrCode(result, " v2rayN ");
           }
         } else if (inputUrl !== "") {
           alert("请输入正确的Vmess链接");
+        } else {
+          clearHash();
+          $(".right").css({ display: "none" });
         }
       };
     </script>
