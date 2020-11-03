@@ -156,18 +156,18 @@
         );
 
       window.onload = () => {
+        window.input = document.getElementById("input");
         if (location.hash) {
-          let input = document.getElementById("input");
-          input.value = location.hash.substr(1);
+          input.value = location.hash.replace(/^#(.*)$/, "$1");
           input.onchange();
         } else {
           clearHash();
         }
       };
 
-      document.getElementById("input").onchange = (e) => {
+      input.onchange = () => {
         let output = document.getElementById("output");
-        let inputUrl = e.target.value;
+        let inputUrl = input.value;
 
         if (inputUrl.startsWith("vmess://")) {
           let result;
