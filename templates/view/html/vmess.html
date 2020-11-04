@@ -172,7 +172,7 @@
         if (inputUrl.startsWith("vmess://")) {
           let result;
           location.hash = inputUrl;
-          $(".right").css({ display: "block" });
+          $(".right").show();
           try {
             result = v2rayNToQuantumult(inputUrl);
             output.value = result;
@@ -183,10 +183,11 @@
             genResultAndQrCode(result, " v2rayN ");
           }
         } else if (inputUrl !== "") {
+          $(".right").hide();
           alert("请输入正确的Vmess链接");
         } else {
           clearHash();
-          $(".right").css({ display: "none" });
+          $(".right").hide();
         }
       };
     </script>
