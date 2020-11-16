@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Image</title>
+    <style rel="stylesheet" type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+
+      body img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <img id="img" />
+    <script type="application/javascript">
+      let refreshImg = () => {
+        document
+          .getElementById("img")
+          .setAttribute(
+            "src",
+            "https://source.unsplash.com/random?d=" + new Date().getTime()
+          );
+      };
+
+      window.onload = () => {
+        refreshImg();
+        setInterval(refreshImg, 2700);
+      };
+    </script>
+  </body>
+</html>
+
