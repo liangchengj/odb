@@ -1,3 +1,0 @@
-GET https://odb.liangchengj.com
-
-Date****: {{$localDatetime rfc1123}}

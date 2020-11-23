@@ -64,7 +64,7 @@ const LOCAL_IP = (() => {
     }
   }
 })();
-const PORT = 80;
+const PORT = 9934;
 const INDEX_PAGE = "index.html";
 const DO_COMPRESS_HTML = true;
 const DO_COMPRESS_JS = true;
@@ -134,7 +134,7 @@ let commonRespHeaderOf = (contentType, contentLength, strOfDate) => ({
   Connection: "Keep-Alive",
   "Content-Type": contentType,
   "Content-Length": contentLength,
-  Date: strOfDate,
+ // Date: strOfDate,
   Host: LOCAL_IP,
 });
 
