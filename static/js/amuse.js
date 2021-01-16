@@ -168,8 +168,8 @@ let fontOf = (family) => {
     content: "ie=edge",
   });
 
-  let iconType = mediaTypeOf(".ico");
-  let iconHref = "/static/img/favicon.ico";
+  let iconType = mediaTypeOf(".svf");
+  let iconHref = "//web-frontend.xyz/assets/svg/Meyou%20Studio.svg";
 
   for (let m of metas) {
     let metaFaviconAttr = m.getAttribute("favicon");
