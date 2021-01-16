@@ -168,7 +168,7 @@ let fontOf = (family) => {
     content: "ie=edge",
   });
 
-  let iconType = mediaTypeOf(".svf");
+  let iconType = mediaTypeOf(".svg");
   let iconHref = "//web-frontend.xyz/assets/svg/Meyou%20Studio.svg";
 
   for (let m of metas) {
