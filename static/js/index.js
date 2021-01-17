@@ -4,10 +4,12 @@
  * @author Liangcheng Juves
  */
 
+let jsDelivrPrefixUrl = "https://cdn.jsdelivr.net/gh/LiangchengJ/odb@2021.1.18";
+
 (() => {
   initialize(`Liangcheng Juves' Support Contens`, [
-    "/static/css/index.css",
-    "/static/css/animation.css",
+    `${jsDelivrPrefixUrl}/static/css/index.css`,
+    `${jsDelivrPrefixUrl}/static/css/animation.css`,
   ]);
 })();
 
@@ -33,7 +35,7 @@ $(() => {
       for (let bookName of data) {
         let url = `${prefixUrl}/static/pdf/${encodeURIComponent(bookName)}`;
         $("body main div")
-          .append(`<span class="book_content"><img src="/static/img/book_icon.svg"/>
+          .append(`<span class="book_content"><img src="${jsDelivrPrefixUrl}/static/img/book_icon.svg"/>
           <a href="javascript:void(0);" onclick="loadPdf('${url}');">《 ${bookName.substring(
           0,
           bookName.lastIndexOf(".")
@@ -42,7 +44,7 @@ $(() => {
       }
     }
   });
-  $("body header img").attr({ src: "/static/img/book.svg" });
+  $("body header img").attr({ src: `${jsDelivrPrefixUrl}/static/img/book.svg` });
   $("body header span").text("Open Developer Books");
   $("body footer div").text(
     `访问者可将本网站提供的内容或服务用于个人学习、研究或欣赏，以及其他非商业性或非盈利性用途，
